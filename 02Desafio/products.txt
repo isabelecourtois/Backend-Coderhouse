@@ -1,0 +1,5 @@
+{
+  "Producto": "Camisa",
+  "Precio": "100",
+  "1d": 1
+}
