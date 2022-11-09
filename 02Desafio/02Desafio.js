@@ -3,91 +3,127 @@
 const { promises: fs } = require('fs')
 
 // Clase
-class Contenedor {
 
-    constructor(ruta) {
-        this.ruta = ruta
+class Contenedor {
+    constructor (ruta){
+        this.ruta = ruta;
+        this.productos = [];
+    
     }
 
     //Funciones
+    
+    saveId(){
+        const length = this.productos.length
 
-    //getAll
-    async getAll() {
+        if (length === 0){
+            return 0
+        }else{
+             return this.productos.length
+        }
+      
+    }
+
+
+    async save(producto){  
+        const id = this.saveId()
+        this.productos.push({
+            ...producto, ...{id : id +1}
+        })
+
         try {
-            let data = await fs.readFile('./products.txt', 'utf-8')
+            await fs.writeFile(this.ruta, JSON.stringify(this.productos, null, 2));
+        }
+        catch (error) {
+            console.log("Error en save()")      
+            
+        }
+    
+    } 
+    
+    async getById(id) {
+        const idEncontrado = await this.productos.find((ele) => ele.id === id)
+        try {
+            console.log(idEncontrado  )
+        }
+        catch(error) {
+            console.log ("Error getById()");
+        }
+    }
+
+
+     async getAll() {
+        try {
+            let data = await fs.readFile(this.ruta, 'utf-8')
             return console.log(data);
         }
         catch (error) {
             return console.log ([]);
         }
     }
-
-    //Save
-    async save(producto) {
-        let data = this.getAll()
-        let id = 0
-        let dataObj = null
-
-        if (data.length == 0) {
-            id = 1
-        } else {
-            dataObj = JSON.parse(data)
-            id = dataObj[dataObj.length = -1].id + 1
-        }
-        const newObj = { id: id, ...producto }
-
-
-        fs.writeFile('./products.txt', JSON.stringyfy(newObj, null, 2))
-            .then(() => {
-                return console.log("nuevo producto");
-            })
-            .catch(error => {
-                return console.log("error al escribir archivo");
-            })
-    }
-
-    //getById
-    async getById(id) {
-        const tomarId = await this.getAll.find((element) => element.id === id)
-        try {
-            console.log(tomarId);
-        }
-        catch (error) {
-            console.log("Error al leer ID");
-        }
-    } 
-
-    //deleteByID
-
-    async deleteById(id){
-        let borrarId = await this.getAll.filter(ele => ele.id !== id)
-        await fs.promises.writeFile('./products.txt', JSON.stringify(borrarId, null, 2))
+/* 
+    async delete(){
+        const deleteFile = await fs.readFile(this.ruta, "utf-8")
         try{
-            console.log("Elemento borrado");
+            const deleteFiles = JSON.parse(deleteFile)
+            return deleteFiles
         }
         catch(error){
-            console.log("Error al borrar");
+            console.log("Error en delete()" )
+        }
+    }
+
+
+    async deleteById(id){
+        let readAllFile = await this.delete()
+        let readFiles = readAllFile.filter(e => e.id !== id)
+        await fs.writeFile(this.ruta, JSON.stringify(readFiles, null, 2))
+        try{
+            console.log(`Se borró el artículo`)
+        }
+        catch(error){
+            console.log("Error en deleteById()")
         }
     }
      
     async deleteAll() {
-        await fs.unlink("./products.txt")
+        await fs.unlink(this.ruta)
             try {
                
-                console.log ("No hay archivo")
+                console.log ("Se borró el archivo")
             }
             catch(error) {
-                console.log("No se pudo borrar")
+                console.log("Error en deleteAll()")
             }
-     }
-
-
+     } */
 
 }
+const contenedor1 = new Contenedor ("./productos.txt")
 
-//Ejecuto mis funciones
 
-const contenedor1 = new Contenedor('./products.txt');
-contenedor1.getAll();
-contenedor1.save({producto:"camisa", precio:"100"});
-contenedor1.getByID (1);
+
+contenedor1.save({"title" : "camisa", "price" : 150, "thumbnail" :"www.camisa.com"})
+contenedor1.save({"title" : "gorra", "price" : 80, "thumbnail" :"www.gorra.com"})
+contenedor1.save({"title" : "chaleco", "price" : 450, "thumbnail" :"www.chaleco.com"})
+contenedor1.save({"title" : "zapatos", "price" : 900, "thumbnail" :"www.zapatos.com"}) 
+ 
+
+ /* contenedor1.save({"title" : "camisa", "price" : 150, "thumbnail" :"www.camisa.com"}, 
+ {"title" : "gorra", "price" : 80, "thumbnail" :"www.gorra.com"}, 
+ {"title" : "chaleco", "price" : 450, "thumbnail" :"www.chaleco.com"}, 
+ {"title" : "zapatos", "price" : 900, "thumbnail" :"www.zapatos.com"});  */ 
+
+
+ //console.log(contenedor1);
+
+ //console.log(contenedor1.getById(2));
+
+ const num = parseInt(Math.random()*4)+1;
+ console.log(num);
+ const prodRandom = contenedor1.getById(num);
+ console.log(prodRandom);
+ //console.log(contenedor1.getAll());
+ //console.log(contenedor1.deleteById(3))
+ //contenedor1.deleteAll();
+
+ 

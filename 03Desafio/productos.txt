@@ -1,0 +1,26 @@
+[
+  {
+    "title": "camisa",
+    "price": 150,
+    "thumbnail": "www.camisa.com",
+    "id": 1
+  },
+  {
+    "title": "gorra",
+    "price": 80,
+    "thumbnail": "www.gorra.com",
+    "id": 2
+  }
+]  {
+    "title": "chaleco",
+    "price": 450,
+    "thumbnail": "www.chaleco.com",
+    "id": 3
+  },
+  {
+    "title": "zapatos",
+    "price": 900,
+    "thumbnail": "www.zapatos.com",
+    "id": 4
+  }
+]
