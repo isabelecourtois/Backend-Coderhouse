@@ -1,0 +1,23 @@
+{
+  "name": "backend-coderhouse",
+  "version": "1.0.0",
+  "description": "Proyecto del curso de Backend de Ocderhouse",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isabelecourtois/Backend-Coderhouse.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/isabelecourtois/Backend-Coderhouse/issues"
+  },
+  "homepage": "https://github.com/isabelecourtois/Backend-Coderhouse#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
