@@ -1,0 +1,49 @@
+extends layout
+
+block formulario
+
+ div(class="container mt-3")
+    div(class="jumbotron")
+        h1(style="color:blue;") Ingrese datos
+        br
+
+        form(action="/productos" method="post")
+
+            div(class="form-group")
+                label(for="producto") <b>Producto</b>
+                input(id="producto" class="form-control" type="text" name="producto")
+        
+
+            div(class="form-group")
+                label(for="precio") <b>Precio</b>
+                input(id="precio" class="form-control" type="number" name="precio")
+        
+            div(class="form-group")
+                label(for="imagen") <b>Thumbnail</b>
+                input(id="imagen" class="form-control" type="text" name="imagen")
+            
+
+            button(class="btn btn-success mt-3 mb-5") Enviar
+
+        h2(style="color:crimson;") Historial
+
+            if productos.length > 0 
+                div(class="table-responsive")
+                    table(class="table table-dark")
+                        tr(style="color: yellow") 
+                            th Producto 
+                            th Precio
+                            th Imagen
+
+                        each producto in productos
+                            tr
+                                td!=producto.producto
+                                td!=producto.precio
+                                td
+                                    img(src!=producto.imagen)               
+                            
+            else 
+                 h3.alert.alert-danger no se encontraron datos
+
+            
+            

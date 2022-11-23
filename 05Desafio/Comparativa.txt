@@ -1,0 +1,9 @@
+¿Cuál biblioteca prefiero?
+
+Definitivamente EJS es la biblioteca que usaría para mis proyectos.
+
+Pug es una biblioteca muy complicada al no usar HTML directamente, me tarde siglos en entender qué error estaba haciendo en el código y al final era un punto en el else, pero es difícil darse cuenta de eso en un idioma que no es exactamente HTML (aún y cuando usé una página para convertir mi HTML a Pug).
+
+Handlebars es mejor que Pug porque sí que usa HTML, pero aún así no me gusta tanto el órden porque todo lo tienes que llamar del body y no tienes módulos como en EJS.
+
+EJS es muy parecido al react en cuanto a que puedes separar por componentes y luego llamarlos, esto hace que sea mucho más ordenado y fácil de adaptar a otros poryectos.
