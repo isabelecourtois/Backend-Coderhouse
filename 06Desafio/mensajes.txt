@@ -1,0 +1,26 @@
+[
+  {
+    "email": "rodleco@gmail.com",
+    "dateAndTime": "30/11/2022, 21:23:19",
+    "message": "Hola",
+    "id": 1
+  },
+  {
+    "email": "rocleco@gmail.com",
+    "dateAndTime": "30/11/2022, 21:23:47",
+    "message": "Todo bien por aquí",
+    "id": 2
+  },
+  {
+    "email": "fabio.amarques1990@gmail.com",
+    "dateAndTime": "30/11/2022, 21:24:05",
+    "message": "Por aquí también",
+    "id": 3
+  },
+  {
+    "email": "lecourtois.isa@gmail.com",
+    "dateAndTime": "30/11/2022, 21:33:54",
+    "message": "Super!",
+    "id": 4
+  }
+]

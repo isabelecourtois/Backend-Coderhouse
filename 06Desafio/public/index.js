@@ -13,7 +13,7 @@ function getProductos(table, productsArray) {
     let row = table.insertRow();
     row.insertCell().innerHTML = el.producto;
     row.insertCell().innerHTML = el.precio;
-    row.insertCell().innerHTML = `<img src="${el.thumbnail}" alt="${el.title}" width="60px">`;
+    row.insertCell().innerHTML = `<img src="${el.thumbnail}" alt="${el.producto}" width="60px">`;
   });
 }
 
