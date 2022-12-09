@@ -62,11 +62,44 @@ class Contenedor {
             return this.productos;
         }
         catch (error) {
-            return console.log ([]);
+            return console.log ("Error en getAll");
         }
     }
 
-    
+     async delete(){
+        const deleteFile = await fs.promises.readFile(this.ruta, "utf-8")
+        try{
+            const deleteFiles = JSON.parse(deleteFile)
+            return deleteFiles
+        }
+        catch(error){
+            console.log("Error en delete()" )
+        }
+    }
+
+
+    async deleteById(id){
+        let readAllFile = await this.delete()
+        let readFiles = readAllFile.filter(e => e.id !== id)
+        await fs.promises.writeFile(this.ruta, JSON.stringify(readFiles, null, 2))
+        try{
+            console.log(`Se borró el artículo`)
+        }
+        catch(error){
+            console.log("Error en deleteById()")
+        }
+    }
+     
+    async deleteAll() {
+        await fs.promises.unlink(this.ruta)
+            try {
+               
+                console.log ("Se borró el archivo")
+            }
+            catch(error) {
+                console.log("Error en deleteAll()")
+            }
+     }
 
 }
 

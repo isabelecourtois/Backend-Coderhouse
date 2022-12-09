@@ -1,7 +1,7 @@
-import express from"express";
-import Contenedor from"../containers/Contenedor.js";
+import express from "express";
+import Contenedor from "../containers/Contenedor.js";
 import {administrador} from "../controllers/permisoAdmin.js";
-import { getProductos, postProducto, putProducto, deleteProducto }from "../controllers/producto.js";
+import { getProductos, postProducto, putProducto, deleteProducto } from "../controllers/producto.js";
 
 const { Router } = express;
 const prodRouter = Router();
