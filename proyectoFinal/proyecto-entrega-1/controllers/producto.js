@@ -23,12 +23,12 @@ export async function getProductosID(req, res) {
 export async function postProducto(req, res) {
     const newProducto = {
         timestamp: Date.now(),
-        nombre: request.body.nombre,
-        descripcion: request.body.descripcion,
-        codigo: request.body.codigo,
-        precio: request.body.precio,
-        foto: request.body.foto,
-        stock: request.body.stock,
+        nombre: req.body.nombre,
+        descripcion: req.body.descripcion,
+        codigo: req.body.codigo,
+        precio: req.body.precio,
+        foto: req.body.foto,
+        stock: req.body.stock,
     }
     const idNew = await prodContainer.save(newProducto);
     res.json({nuevoPorducto:idNew});
@@ -37,12 +37,12 @@ export async function postProducto(req, res) {
 export async function putProducto(req, res) {
     const updatedProducto = {
         timestamp: Date.now(),
-        nombre: request.body.nombre,
-        descripcion: request.body.descripcion,
-        codigo: request.body.codigo,
-        precio: request.body.precio,
-        foto: request.body.foto,
-        stock: request.body.stock,
+        nombre: req.body.nombre,
+        descripcion: req.body.descripcion,
+        codigo: req.body.codigo,
+        precio: req.body.precio,
+        foto: req.body.foto,
+        stock: req.body.stock,
     }
     const id = await prodContainer.update(req.params.id, updatedProducto);
     res.json({updatedProducto: [prodContainer.getById(id)]});

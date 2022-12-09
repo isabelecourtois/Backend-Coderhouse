@@ -1,5 +1,5 @@
 import express from "express";
-import  {Router} from "express";
+//import  {Router} from "express";
 import prodRouter from  "./routes/productos.js";
 import carritoRouter from  "./routes/carrito.js";
 
