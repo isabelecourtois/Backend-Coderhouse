@@ -6,7 +6,7 @@ import { getProductos, postProducto, putProducto, deleteProducto } from "../cont
 const { Router } = express;
 const prodRouter = Router();
 
-export const prodContainer = new Contenedor("../containers/productos.txt");
+export const prodContainer = new Contenedor("./containers/productos.txt");
 
 prodRouter.get("/:id?", getProductos);
 
