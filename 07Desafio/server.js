@@ -1,7 +1,7 @@
 const Contenedor = require("./Funciones/Contenedor.js");
 const optionsSql = require("./options/mysqlconn.js");
 const optionsSqlite = require("./options/mysqlconn.js");
-const { options } = require('./options/mysqlconn.js')
+//const { options } = require('./options/mysqlconn.js')
 //const knex = require('knex')(options)
 
 
