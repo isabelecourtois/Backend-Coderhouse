@@ -36,13 +36,13 @@ mensajesContenedor.crearTablaMensajes()
 
         return mensajesContenedor.save(nuevo)
     })
-    .then(() => {
+   /*  .then(() => {
         console.log('2- mensaje insertado')
     })
     .catch(err => console.log(err))
     .finally(() => {
         mensajesContenedor.close()
-    })
+    }) */
 
     productosContenedor.crearTablaProductos()
     .then(() => {
@@ -73,13 +73,13 @@ mensajesContenedor.crearTablaMensajes()
 
         return productosContenedor.save(nuevo)
     })
-    .then(() => {
+   /*  .then(() => {
         console.log('2- producto insertado')
     })
     .catch(err => console.log(err))
     .finally(() => {
         productosContenedor.close()
-    })
+    }) */
 
 //Get
 
