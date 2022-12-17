@@ -2,7 +2,7 @@ import express from "express";
 import prodRouter from "./routes/productos.js";
 import cartRouter from "./routes/carito.js";
 
-export const admin = false;
+export const admin = true;
 
 const app = express();
 const PORT = process.env.PORT || 8080;

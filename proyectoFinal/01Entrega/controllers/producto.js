@@ -2,6 +2,7 @@ import { prodContainer } from "../routes/productos.js";
 
 export async function deleteProducts(req, res) {
   const id = await prodContainer.deleteById(req.params.id);
+  console.log(id);
   res.json({ status: "ok", deletedProduct: id });
 }
 
@@ -40,7 +41,9 @@ export async function putProducts(req, res) {
       precio,
       stock,
     };
+    //console.log(updatedProduct);
     const id = await prodContainer.update(req.params.id, updatedProduct);
+    //console.log(id);
     res.json({ status: "ok", updatedProduct: [prodContainer.getById(id)] });
   }
   

@@ -61,16 +61,6 @@ async getAll() {
       console.log("error en getAll");
     }
   }
- /* async getAll() {
-    try {
-        let data = await fs.promises.readFile(this.ruta, 'utf-8')
-        this.productos = JSON.parse(data);
-        return this.productos;
-    }
-    catch (error) {
-        return console.log ("Error en getAll");
-    }
-} */
 
  async delete(){
     const deleteFile = await fs.promises.readFile(this.ruta, "utf-8")
@@ -83,18 +73,35 @@ async getAll() {
     }
 }
 
+async deleteById(id) {
 
-async deleteById(id){
-    let readAllFile = await this.delete()
-    let readFiles = readAllFile.filter(e => e.id !== id)
-    await fs.promises.writeFile(this.ruta, JSON.stringify(readFiles, null, 2))
-    try{
-        console.log(`Se borró el artículo`)
-    }
-    catch(error){
-        console.log("Error en deleteById()")
-    }
-}
+    try {
+     const data = await fs.promises.readFile(this.ruta, "utf-8");
+     this.productos = JSON.parse(data);
+     let objetoBorrado = this.productos.find(objeto => objeto.id === parseInt(id));
+
+ 
+         if (objetoBorrado === undefined) {
+ 
+             return {error: 'Producto no encontrado'};
+             
+ 
+         } else {
+ 
+             let indice = this.productos.indexOf(objetoBorrado);
+             this.productos.splice(indice,1);
+             fs.writeFileSync(this.ruta, JSON.stringify(this.productos, null, 2));
+             return objetoBorrado;
+ 
+         }
+     }
+     catch (error) {
+         return {error: 'No se pudo borrar el objeto con ese ID'};
+     }
+     
+ }
+
+
  
 async deleteAll() {
     await fs.promises.unlink(this.ruta)
@@ -107,6 +114,62 @@ async deleteAll() {
         }
  }
 
+ async update(id, objeto) {
+
+   // let array = this.getAll();
+
+   try {
+    const data = await fs.promises.readFile(this.ruta, "utf-8");
+    this.productos = JSON.parse(data);
+    let objetoActualizado = this.productos.find(objeto => objeto.id === parseInt(id));
+   // console.log(objetoActualizado);
+
+        if (objetoActualizado === undefined) {
+
+            return {error: 'Producto no encontrado'};
+            
+
+        } else {
+
+            let indice = this.productos.indexOf(objetoActualizado);
+            objeto.id = parseInt(id);
+            objeto.timestamp = Date.now();
+            this.productos[indice] = objeto;
+            fs.writeFileSync(this.ruta, JSON.stringify(this.productos, null, 2));
+            return objeto;
+
+        }
+    }
+    catch (error) {
+        return {error: 'No se pudo actualizar el objeto con ese ID'};
+    }
+    
+}
+
+ /* IdExists(id) {
+    let response = false;
+    this.productos.forEach((element, index) => {
+      if (element.id == id) {
+        response = index;
+      }
+    });
+    return response;
+  }
+
+  async update(id, newObject) {
+    let index = this.IdExists(id);
+    if (index) {
+      this.productos[index] = { ...newObject, id: Number(id) };
+      await fs.promises.writeFile(
+        this.ruta,
+        JSON.stringify(this.producto)
+      );
+      console.log("se actualizo");
+      return Promise.resolve(id);
+    } else {
+      console.log("no existe el id");
+    }
+  } */
 }; 
 
 export default Container;
