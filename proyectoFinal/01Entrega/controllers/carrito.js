@@ -4,9 +4,9 @@ import { prodContainer } from "../routes/productos.js";
 
 export async function getProductsInCart(req, res) {
   const cart = await cartContainer.getById(req.params.id);
+  //console.log(cart.productos);
   res.json(cart.productos);
 }
-
 
 export async function deleteCart(req, res) {
   const id = await cartContainer.deleteById(req.params.id);
@@ -15,7 +15,8 @@ export async function deleteCart(req, res) {
 
 export async function deleteProductInCart(req, res) {
   const { id, id_prod } = req.params;
-  const cart = cartContainer.getById(id);
+  const cart = await cartContainer.getById(id);
+  console.log(cart);
 
   const newCartProducts = cart.productos.filter((producto) => {
     return producto.id != id_prod;
@@ -30,8 +31,6 @@ export async function deleteProductInCart(req, res) {
     });
 }
 
-
-
 export async function postCart(req, res) {
   const newCart = { timestamp: Date.now(), productos: [] };
   const idNew = await cartContainer.save(newCart);
@@ -41,9 +40,13 @@ export async function postCart(req, res) {
 export async function postProductInCart(req, res) {
   const cartId = req.params.id;
   const productId = req.params.id_prod;
+  //console.log(cartId);
+  //console.log(productId);
 
-  const cart = cartContainer.getById(cartId);
-  const product = prodContainer.getById(productId);
+  const cart = await cartContainer.getById(cartId);
+  const product = await prodContainer.getById(productId);
+  //console.log(cart);
+  //console.log(product);
 
   cart.productos.push(product);
   console.log(cart);

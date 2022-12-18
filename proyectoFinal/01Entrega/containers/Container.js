@@ -44,7 +44,7 @@ async getById(id) {
     const prodEncontrado = idEncontrado.find((el) => el.id == id)
     try {
       //console.log(idEncontrado);  
-      console.log(prodEncontrado)
+     // console.log(prodEncontrado)
         return prodEncontrado;
     }
     catch(error) {
