@@ -1,11 +1,12 @@
 // Llamo librerias
 
 //const { promises: fs } = require('fs');
-const knex = require('knex');
+//const knex = require('knex');
+import knex from "knex";
 
 // Clase
 
-class Contenedor {
+export class Contenedor {
     constructor(options, table) {
         this.knex = knex (options);
         this.table = table;
@@ -68,4 +69,4 @@ class Contenedor {
     }
 }
 
-module.exports = Contenedor
+//module.exports = Contenedor

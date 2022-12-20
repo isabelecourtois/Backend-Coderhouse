@@ -1,13 +1,13 @@
-const Contenedor = require("./Funciones/Contenedor.js");
-const optionsSql = require("./options/mysqlconn.js");
-const optionsSqlite = require("./options/mysqlconn.js");
+import {Contenedor} from "./Funciones/Contenedor.js";
+import {optionsSql} from "./options/mysqlconn.js";
+import {optionsSqlite} from "./options/mysqlconn.js";
 //const { options } = require('./options/mysqlconn.js')
 //const knex = require('knex')(options)
 
 
-const express = require("express");
-const { Server: HttpServer } = require("http");
-const { Server: IOServer } = require("socket.io");
+import express from "express";
+import { Server as HttpServer } from "http";
+import{ Server as IOServer } from "socket.io";
 
 const app = express();
 const httpServer = new HttpServer(app);
