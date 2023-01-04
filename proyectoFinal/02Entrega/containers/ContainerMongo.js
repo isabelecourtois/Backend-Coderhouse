@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import * as model from "./modelsMongo/producto.js";
-import * as model from "./modelsMongo/carrito.js";
+import * as model from "./data/modelsMongo/producto.js";
+//import * as model from "./modelsMongo/carrito.js";
 
 
 class ContainerMongo {
@@ -10,7 +10,6 @@ class ContainerMongo {
   }
 
   async save(producto) {
-
     try {
         await mongoose.connect(this.URL, {
             useNewUrlParser: true,
@@ -72,3 +71,4 @@ class ContainerMongo {
   }
 
 }
+export default ContainerMongo

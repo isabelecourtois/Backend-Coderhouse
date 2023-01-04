@@ -16,5 +16,6 @@
     "firebase-admin": "^11.4.1",
     "mongoose": "^6.8.2"
   },
+  "devDependencies": {},
   "description": ""
 }

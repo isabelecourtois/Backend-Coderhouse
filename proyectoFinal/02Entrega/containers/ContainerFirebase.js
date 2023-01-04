@@ -1,7 +1,8 @@
 import admin from "firebase-admin";
 import fs from "fs";
 
-const serviceAccount = JSON.parse(fs.readFileSync( "../FirebaseDb/backendcoder-8a09a-firebase-adminsdk-2twaq-1a20208756.json"));
+const serviceAccount = JSON.parse(fs.readFileSync( "./FirebaseDb/backendcoder-8a09a-firebase-adminsdk-2twaq-1a20208756.json"));
+
 
 class ContainerFirebase {
 
@@ -66,3 +67,4 @@ class ContainerFirebase {
   }
 
 }
+export default ContainerFirebase

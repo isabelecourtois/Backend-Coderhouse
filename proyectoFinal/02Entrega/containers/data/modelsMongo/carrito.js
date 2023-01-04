@@ -6,4 +6,4 @@ const carritoSchema = new mongoose.Schema({
     timestamp: {type: String, require: true, max: 15},
 })
 
-export const products = mongoose.model(productsCollName, productsSchema);
+export const products = mongoose.model(carritoCollName, carritoSchema);
