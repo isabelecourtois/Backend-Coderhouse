@@ -1,14 +1,5 @@
 [
-  {
-    "timestamp": 1111111111,
-    "nombre": "Curso1",
-    "descripcion": "Curso1",
-    "codigo": "ab1111",
-    "foto": "https://www.curso1.com",
-    "precio": 100,
-    "stock": 10,
-    "id": 0
-  },
+  { "timestamp": 1111111111,"nombre": "Curso1", "descripcion": "Curso1","codigo": "ab1111","foto": "https://www.curso1.com","precio": 100,"stock": 10,"id": 0},
   {
     "timestamp": 2222222222,
     "nombre": "Curso2",

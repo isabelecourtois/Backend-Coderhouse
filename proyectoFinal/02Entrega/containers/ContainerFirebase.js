@@ -1,8 +1,11 @@
 import admin from "firebase-admin";
 import fs from "fs";
 
-const serviceAccount = JSON.parse(fs.readFileSync( "./FirebaseDb/backendcoder-8a09a-firebase-adminsdk-2twaq-1a20208756.json"));
+export const serviceAccount = JSON.parse(fs.readFileSync( "./FirebaseDb/backendcoder-8a09a-firebase-adminsdk-2twaq-1a20208756.json"));
 
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 
 class ContainerFirebase {
 
@@ -10,9 +13,9 @@ class ContainerFirebase {
     this.collection = collection;
     this.db = admin.firestore();
 
-    admin.initializeApp({
+   /*  admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
-    });
+    }); */
     
   }
 

@@ -1,7 +1,9 @@
 import express from "express";
 import Container from "../containers/Container.js";
 import ContainerFirebase from "../containers/ContainerFirebase.js";
+import { serviceAccount } from "../containers/ContainerFirebase.js";
 import ContainerMongo from "../containers/ContainerMongo.js";
+import * as model from "../containers/data/modelsMongo/producto.js";
 import { administrador } from "../controllers/permisoAdmin.js";
 import { getProducts, postProducts, putProducts, deleteProducts } from "../controllers/producto.js";
 
@@ -11,26 +13,30 @@ const prodRouter = Router();
 //export const prodContainer = new Container("./containers/data/products.txt");
 
 let metodoDB = 0;
-export let prodContainer = "container"
+let prodContainer = ""
 
 switch (metodoDB) {
-    
-  case 0:
-    console.log("FS");
-    break;
-    prodContainer = new Container("./containers/data/products.txt");
-  case 1:
-    console.log("FB");
-    break;
-  prodContainer = new ContainerFirebase("carts", serviceAccount);
-   //case 2:
-    //text = "No value found";
-} 
+
+    case 0:
+        console.log("FS");
+        prodContainer = new Container("./containers/data/products.txt");
+        break;
+    case 1:
+        console.log("FB");
+        prodContainer = new ContainerFirebase("productos", serviceAccount);
+        break;
+    case 2:
+        console.log("MDB");
+        prodContainer = new ContainerMongo("mongodb://localhost:27017/ecommerce", model.productos);
+        break;
+}
+
+export { prodContainer };
 
 
 prodRouter.get("/:id?", getProducts);
 
-prodRouter.post("/", administrador , postProducts);
+prodRouter.post("/", administrador, postProducts);
 
 prodRouter.put("/:id", administrador, putProducts);
 

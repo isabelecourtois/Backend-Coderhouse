@@ -1,4 +1,4 @@
-import { cartContainer } from "../routes/carito.js";
+import { cartContainer } from "../routes/carrito.js";
 import { prodContainer } from "../routes/productos.js";
 
 

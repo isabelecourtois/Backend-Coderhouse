@@ -1,6 +1,6 @@
 import express from "express";
 import prodRouter from "./routes/productos.js";
-import cartRouter from "./routes/carito.js";
+import cartRouter from "./routes/carrito.js";
 
 export const admin = true;
 
