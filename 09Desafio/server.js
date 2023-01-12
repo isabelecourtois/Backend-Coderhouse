@@ -18,7 +18,7 @@ app.set("view engine", "ejs");
 
 //Contenedores
 const productosContenedor = new ContenedorSQL(optionsSqlite, "productos");
-const mensajesContenedor = new Contenedor("./Funciones/mensajes.txt");
+const mensajesContenedor = new Contenedor("./Containers/mensajes.txt");
 
 productosContenedor.crearTablaProductos()
   .then(() => {
