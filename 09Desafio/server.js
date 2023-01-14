@@ -88,12 +88,13 @@ io.on("connection", async (socket) => {
   })
 
 
-  const mensajes = await mensajesContenedor.getAll();
+  const mensajes = await mensajesContenedor.getAllNormalizr();
   socket.emit('messages', mensajes);
   socket.on('newMessage', async (data) => {
     await mensajesContenedor.save(data);
-    io.sockets.emit("messages", await mensajesContenedor.getAll());
+    io.sockets.emit("messages", await mensajesContenedor.getAllNormalizr());
   })
+  console.log(mensajes);
 })
 
 const PORT = 8080

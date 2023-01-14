@@ -34,24 +34,46 @@ function updateMessages(message) {
       <span style="color: blue">${msj.email}</span><span style="color: brown"> [${msj.dateAndTime}] </span><span style="color: green">${msj.message}</span>
     </div>`
   })
-  .join("<br>")
+    .join("<br>")
   document.getElementById("messagesMain").innerHTML = html;
 }
 
 function addMessage() {
   const message = {
-    email: document.getElementById("email").value,
+    author: {
+      mail: document.getElementById("mail").value,
+      nombre: document.getElementById("nombre").value,
+      apellido: document.getElementById("apellido").value,
+      edad: document.getElementById("edad").value,
+      alias: document.getElementById("alias").value,
+      avatar: document.getElementById("avatar").value
+    },
     dateAndTime: new Date(Date.now()).toLocaleString(),
-    message: document.getElementById("message").value
+    mesage: document.getElementById("message").value
   }
 
   socket.emit("newMessage", message);
   return false
 }
 
-
-
 socket.on("messages", data => {
-  updateMessages(data);
+  const schemaAuthor = new normalizr.schema.Entity( "author",{},{ idAttribute: "mail" }
+  );
+  const schemaMessage = new normalizr.schema.Entity("message", {
+    author: schemaAuthor,
+  });
+  const schemaMessageAll = new normalizr.schema.Entity("messages", {
+    messages: [messageSchema],
+  });
+
+  const messDeNormalizado = normalizr.denormalize(data.result,schemaMessageAll,data.entities);
+  const tamanoNormalizado = JSON.stringify(data).length
+  const tamanoDesNormalizado = JSON.stringify(messDeNormalizado).length
+  const porcentajeCompresion = 100 - (tamanoNormalizado * 100 / tamanoDesNormalizado)
+  console.log("TAMANO DES NORMALIZADO", tamanoDesNormalizado)
+  console.log("TAMANO NORMALIZADO", tamanoNormalizado)
+  console.log("SE ACHICO UN " + porcentajeCompresion + "%")
+  updateMessages(messDeNormalizado.messages);
+
 
 })
