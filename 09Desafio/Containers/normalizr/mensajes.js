@@ -3,7 +3,7 @@ import { normalize, schema } from 'normalizr'
 const mensajes = {
     id: "mensajesCoder",
 
-    mensajes: [
+    mensaje: [
         {
             author: {
                 mail: "rodleco@gmail.com",
@@ -48,14 +48,14 @@ const mensajes = {
 
 // Definimos schemas
 
-const schemaAuthor = new schema.Entity('author',{},{idAttribute: 'mail'},)
+const schemaAuthor = new schema.Entity('author',{},{idAttribute: 'mail'})
 
-const schemaMessage = new schema.Entity('message', {
+const schemaMessage = new schema.Entity('mensaje', {
  author:schemaAuthor,   
 })
 
-const schemaMessageAll =new schema.Entity("messages", {
-    messages: [schemaMessage],
+const schemaMessageAll =new schema.Entity("mensajes", {
+    mensaje: [schemaMessage],
   });
 
 //const tamanoOrganigrama = JSON.stringify(empresa).length

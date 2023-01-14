@@ -1,5 +1,10 @@
 import fs from "fs";
 import { normalize, schema } from "normalizr";
+import util from "util";
+
+function print(obj) {
+  console.log(util.inspect(obj, false, 12, true));
+}
 
 class Container {
 
@@ -144,25 +149,21 @@ class Container {
     }
 
   }
-  
+
   //Normalizr
 
   normalizer(obj) {
     this.dataToNormalize = {
       id: "mensajesCoder",
-      mensajes: obj,
+      mensaje: obj,
     };
-    // SCHEMAS
-    this.schemaAuthor = new schema.Entity(
-      "author",
-      {},
-      { idAttribute: "mail" }
-    );
-    this.schemaMessage = new schema.Entity("message", {
+
+    this.schemaAuthor = new schema.Entity("author", {}, { idAttribute: "mail" });
+    this.schemaMessage = new schema.Entity("mensaje", {
       author: this.schemaAuthor,
     });
-    this.schemaMessageAll = new schema.Entity("messages", {
-      messages: [this.schemaMessage],
+    this.schemaMessageAll = new schema.Entity("mensajes", {
+      mensaje: [this.schemaMessage],
     });
     return normalize(this.dataToNormalize, this.schemaMessageAll);
   }
@@ -174,6 +175,7 @@ class Container {
     } catch (err) {
       console.log(err);
     }
+    console.log(data);
   }
 
 };
