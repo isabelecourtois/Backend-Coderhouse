@@ -58,7 +58,6 @@ const schemaMessageAll =new schema.Entity("mensajes", {
     mensaje: [schemaMessage],
   });
 
-//const tamanoOrganigrama = JSON.stringify(empresa).length
 
 // normalizar
 
@@ -66,11 +65,6 @@ const messNormalizado = normalize(mensajes, schemaMessageAll)
 print (messNormalizado)
 
 console.log(messNormalizado);
-
-/* const tamanoOrganigramaNorm = JSON.stringify(orgNormalizado).length
-
-console.log('longitud de obj original: ' + tamanoOrganigrama)
-console.log('longitud de obj normalizado: ' + tamanoOrganigramaNorm) */
 
 // utils
 

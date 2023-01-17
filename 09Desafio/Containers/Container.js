@@ -178,6 +178,9 @@ class Container {
     console.log(data);
   }
 
+  compresion() {
+    console.log(this.getAllNormalizr().length)
+  }
 };
 
 export default Container;

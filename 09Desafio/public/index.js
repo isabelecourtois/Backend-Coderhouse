@@ -40,7 +40,7 @@ function updateMessages(mensaje) {
 }
 
 function addMessage() {
-  const message = {
+  const mensaje = {
     author: {
       mail: document.getElementById("mail").value,
       nombre: document.getElementById("nombre").value,
@@ -50,24 +50,19 @@ function addMessage() {
       avatar: document.getElementById("avatar").value
     },
     dateAndTime: new Date(Date.now()).toLocaleString(),
-    mesage: document.getElementById("message").value
+    message: document.getElementById("message").value
   }
 
-  socket.emit("newMessage", message);
+  socket.emit("newMessage", mensaje);
   return false
 }
 
-socket.on("mensajes", data => {
-  const schemaAuthor = new normalizr.schema.Entity( "author",{},{ idAttribute: "mail" });
-  const schemaMessage = new normalizr.schema.Entity("mensaje", {
-    author: schemaAuthor,
-  });
-  const schemaMessageAll = new normalizr.schema.Entity("mensajes", {
-    messages: [schemaMessage],
-  });
+socket.on("messages", data => {
+  const schemaAuthor = new normalizr.schema.Entity("author", {}, { idAttribute: "mail" });
+  const schemaMessage = new normalizr.schema.Entity("mensaje", {author: schemaAuthor,});
+  const schemaMessageAll = new normalizr.schema.Entity("mensajes", { mensaje: [schemaMessage],});
 
-  const messDeNormalizado = normalizr.denormalize(data.result,schemaMessageAll,data.entities);
-  updateMessages(messDeNormalizado.mensajes);
+  const messDeNormalizado = normalizr.denormalize(data.result, schemaMessageAll, data.entities);
 
-
+  updateMessages(messDeNormalizado.mensaje);
 })

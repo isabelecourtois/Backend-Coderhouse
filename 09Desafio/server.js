@@ -71,7 +71,7 @@ app.get("/api/productos-test", async (req, res) => {
   } catch (error) {
     console.log(error);
   }
- 
+
 });
 
 
@@ -94,8 +94,19 @@ io.on("connection", async (socket) => {
     await mensajesContenedor.save(data);
     io.sockets.emit("messages", await mensajesContenedor.getAllNormalizr());
   })
-  console.log(mensajes);
+  //console.log(mensajes);
+
 })
+
+app.get("/compresion", async (req, res) => {
+  try {
+    const porcentaje = await mensajesContenedor.compresion();
+    res.render(porcentaje);
+    console.log(porcentaje);
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 const PORT = 8080
 
