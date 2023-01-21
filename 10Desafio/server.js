@@ -37,12 +37,14 @@ app.use(session({
 }))
 
 app.get("/logout", (req, res) => {
-  const nombre = req.session.nombre || ""
+  const nombre = req.session.nombre;
 req.session.destroy( err => {
   if (err){
     res.render({error: "algo hiciste mal", descripcion: err})
   } else {
-    res.render({respuesta: "Hasta luego " + nombre}) 
+    res.render('logout', {
+      nombre: nombre, 
+    }) ;
   }
 })
 })
@@ -85,12 +87,14 @@ productosContenedor.crearTablaProductos()
 
 app.get("/login", async (req, res) => {
   try {
-    if( req.query.nombre){
+    req.query.nombre ? req.session.nombre = req.query.nombre : null
+    if( req.session.nombre){
     const productos = await productosContenedor.getAll();
     res.render("index", { 
       productos: productos,
-      user: req.query.nombre,
+      nombre: req.session.nombre,
      });
+     console.log("usuario logueado");
     }
     else{
       res.render("login");
