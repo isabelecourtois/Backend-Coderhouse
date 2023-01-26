@@ -9,6 +9,8 @@ import { Server as IOServer } from "socket.io";
 import session from 'express-session'
 import cookieParser from 'cookie-parser'
 import MongoStore from "connect-mongo"
+import passport from 'passport'
+import { Strategy as LocalStrategy } from 'passport-local'
 
 const app = express();
 const httpServer = new HttpServer(app);
@@ -16,38 +18,157 @@ const io = new IOServer(httpServer);
 
 
 app.use(express.static("./public"));
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.set("view engine", "ejs");
+
+const usuarios = []
+
+// Setear registro y log-in PASSPORT
+
+passport.use('register', new LocalStrategy({
+  passReqToCallback: true    
+}, (req, username, password, done) => {
+  const { direccion } = req.body
+
+  const usuario = usuarios.find(usuario => usuario.username == username)
+  if (usuario) {
+      return done('el usuario ya esta registrado')
+  }
+
+  const newUser = {
+      username,
+      password,
+      direccion
+  }
+  usuarios.push(newUser)
+
+  done(null, newUser)
+}))
+
+passport.use('login', new LocalStrategy((username, password, done) => {
+
+  const usuario = usuarios.find(usuario => usuario.username == username)
+  if (!usuario) {
+      return done('no hay usuario', false)
+  }
+
+  if (usuario.password != password) {
+      return done('password incorrecta', false)
+  }
+
+  usuario.contador = 0
+
+  return done(null, usuario)
+}))
+
+//Serializamos y desaerializamos
+
+passport.serializeUser((user, done) => {
+  done(null, user.username)
+})
+
+passport.deserializeUser((username, done) => {
+  const usuario = usuarios.find(usuario => usuario.username == username)
+  done(null, usuario)
+})
 
 //Cookies & Session
 
 app.use(cookieParser('TeGaneAlan!'))
-const mongoAdvOptions = {  useNewUrlParser: true, useUnifiedTopology: true}
+const mongoAdvOptions = { useNewUrlParser: true, useUnifiedTopology: true }
 app.use(session({
 
   store: MongoStore.create({
     mongoUrl: "mongodb+srv://rocleco:rocleco@coderhouse.w04bgms.mongodb.net/?retryWrites=true&w=majority",
-    mongoOptions: mongoAdvOptions,
-    ttl: 600
+    mongoOptions: mongoAdvOptions
   }),
 
 
   secret: "TeGaneAlan!",
   resave: false,
   saveUninitialized: false,
+  cookie: {
+    maxAge:6000
+  }
 }))
 
-app.get("/logout", (req, res) => {
-  const nombre = req.session.nombre;
-req.session.destroy( err => {
-  if (err){
-    res.render({error: "algo hiciste mal", descripcion: err})
-  } else {
-    res.render('logout', {
-      nombre: nombre, 
-    }) ;
-  }
+//Iniciamos Passport
+
+app.use(passport.initialize())
+app.use(passport.session())
+
+
+// Rutas de registro 
+
+app.get('/register', (req, res) => {
+    res.render('register')
 })
+
+app.post('/register', passport.authenticate('register', { failureRedirect: '/failregister', successRedirect: '/'}))
+
+app.get('/failregister', (req, res)=> {
+    res.render('register-error')
 })
+
+
+// Rutas de login 
+
+app.get('/login', (req, res) => {
+    if (req.isAuthenticated()) {
+        res.redirect('/index')
+    }
+
+    res.sendFile('login')
+})
+
+app.post('/login', passport.authenticate('login', { failureRedirect: '/faillogin', successRedirect: '/index' }))
+
+app.get('/faillogin', (req, res) => {
+    res.render('login-error')
+})
+
+// Rutas de index 
+
+function requireAuthentication(req, res, next) {
+    if (req.isAuthenticated()) {
+        next()
+    } else {
+        res.redirect('/login')
+    }
+}
+
+app.get('/index', requireAuthentication, (req, res) => {
+    if (!req.user.contador) {
+        req.user.contador = 0
+    }
+
+    req.user.contador++
+
+    const usuario = usuarios.find(usuario => usuario.username == req.user.username)
+
+    res.render('index', {
+        // datos: usuario,
+        contador: req.user.contador
+    })
+})
+
+// Ruta de logout 
+
+app.get('/logout', (req, res) => {
+    req.logout(err => {
+        res.redirect('/login')
+    })
+})
+
+
+// Ruta raiz //
+
+
+app.get('/', (req, res) => {
+    res.redirect('/index')
+})
+
 
 //Contenedores
 const productosContenedor = new ContenedorSQL(optionsSqlite, "productos");
@@ -83,27 +204,6 @@ productosContenedor.crearTablaProductos()
     return productosContenedor.save(nuevo)
   })
 
-//Get
-
-app.get("/login", async (req, res) => {
-  try {
-    req.query.nombre ? req.session.nombre = req.query.nombre : null
-    if( req.session.nombre){
-    const productos = await productosContenedor.getAll();
-    res.render("index", { 
-      productos: productos,
-      nombre: req.session.nombre,
-     });
-     console.log("usuario logueado");
-    }
-    else{
-      res.render("login");
-      console.log("log-in de usuario");
-    }
-  } catch (error) {
-    console.log(error);
-  }
-});
 
 //Get Faker
 
@@ -151,7 +251,6 @@ app.get("/compresion", async (req, res) => {
     console.log(error);
   }
 });
-
 
 const PORT = 8080
 
