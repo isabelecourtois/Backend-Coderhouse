@@ -29,7 +29,7 @@ const usuarios = []
 passport.use('register', new LocalStrategy({
   passReqToCallback: true    
 }, (req, username, password, done) => {
-  const { direccion } = req.body
+  //const { direccion } = req.body
 
   const usuario = usuarios.find(usuario => usuario.username == username)
   if (usuario) {
@@ -39,9 +39,10 @@ passport.use('register', new LocalStrategy({
   const newUser = {
       username,
       password,
-      direccion
+      //direccion
   }
   usuarios.push(newUser)
+  console.log(newUser);
 
   done(null, newUser)
 }))
@@ -119,12 +120,12 @@ app.get('/login', (req, res) => {
         res.redirect('/index')
     }
 
-    res.sendFile('login')
+    res.render('login')
 })
 
-app.post('/login', passport.authenticate('login', { failureRedirect: '/faillogin', successRedirect: '/index' }))
+app.post('/login', passport.authenticate('login', { failureRedirect: '/login-error', successRedirect: '/index' }))
 
-app.get('/faillogin', (req, res) => {
+app.get('/login-error', (req, res) => {
     res.render('login-error')
 })
 
@@ -148,7 +149,7 @@ app.get('/index', requireAuthentication, (req, res) => {
     const usuario = usuarios.find(usuario => usuario.username == req.user.username)
 
     res.render('index', {
-        // datos: usuario,
+        datos: usuario,
         contador: req.user.contador
     })
 })
