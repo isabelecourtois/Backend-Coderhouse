@@ -2,6 +2,7 @@ import { ContenedorSQL } from "./Containers/ContainerSQL.js";
 import { optionsSqlite } from "./options/mysqlconn.js";
 import Contenedor from "./Containers/Container.js";
 import { productosNuevos } from "./Containers/mockProductos.js";
+import { userMongo } from "./db/usuarioPassport.js";
 
 import express from "express";
 import { Server as HttpServer } from "http";
@@ -22,7 +23,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.set("view engine", "ejs");
 
-const usuarios = []
+const usuarios = new userMongo
 
 // Setear registro y log-in PASSPORT
 
@@ -31,7 +32,7 @@ passport.use('register', new LocalStrategy({
 }, (req, username, password, done) => {
   //const { direccion } = req.body
 
-  const usuario = usuarios.find(usuario => usuario.username == username)
+  const usuario = Array.from(usuarios).find(usuario => usuario.username == username)
   if (usuario) {
       return done('el usuario ya esta registrado')
   }
@@ -41,7 +42,7 @@ passport.use('register', new LocalStrategy({
       password,
       //direccion
   }
-  usuarios.push(newUser)
+  Array.from(usuarios).push(newUser)
   console.log(newUser);
 
   done(null, newUser)
@@ -49,7 +50,7 @@ passport.use('register', new LocalStrategy({
 
 passport.use('login', new LocalStrategy((username, password, done) => {
 
-  const usuario = usuarios.find(usuario => usuario.username == username)
+  const usuario = Array.from(usuarios).find(usuario => usuario.username == username)
   if (!usuario) {
       return done('no hay usuario', false)
   }
@@ -69,9 +70,13 @@ passport.serializeUser((user, done) => {
   done(null, user.username)
 })
 
-passport.deserializeUser((username, done) => {
-  const usuario = usuarios.find(usuario => usuario.username == username)
-  done(null, usuario)
+passport.deserializeUser(async(username, done) => {
+  try{
+  const usuario = Array.from(usuarios).find(usuario => usuario.username == username)
+  usuario ? done(null, usuario):null;
+  }catch(error){
+    done(error);
+  }
 })
 
 //Cookies & Session
@@ -146,7 +151,7 @@ app.get('/index', requireAuthentication, (req, res) => {
 
     req.user.contador++
 
-    const usuario = usuarios.find(usuario => usuario.username == req.user.username)
+    const usuario = Array.from(usuarios).find(usuario => usuario.username == req.user.username)
 
     res.render('index', {
         datos: usuario,
