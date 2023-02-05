@@ -14,6 +14,7 @@ import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
 import parseArgs from "minimist";
 import dotenv from 'dotenv'
+import random from "./routes/random.js";
 
 dotenv.config({
     path: './.env'
@@ -229,6 +230,9 @@ app.get("/api/productos-test", async (req, res) => {
   }
 
 });
+
+//Ruta Random
+app.use("/api/",random);
 
 //Get Info
 
