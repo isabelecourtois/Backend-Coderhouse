@@ -22,5 +22,11 @@ pm2 start server.js serverModeCluster  --watch -i max -- --port 8081
 5. Hacer pruebas de finalización de procesos fork y cluster.
 
 6. Configurar Nginx
-6.1 Refirigir todas las consultas de /api/randoms al 8081.
+6.1 Refirigir todas las consultas de /api/randoms al 8081
+pm2 start server.js serverModeCluster  --$ pm2 start server.js serverModeCluster  --watch -i max -- --port 8081
+pm2 start server.js serverModeFork --watch -- --port 8080
 6.2 Modificar config para /api/randoms sean redirigidas a un cluster de servidores gestionado desde Nginx repartiéndolas equitativamente entre 8082, 8083, 8084, 8085.
+pm2 start server.js serverModeFork --watch -- --port 8082
+pm2 start server.js serverModeFork --watch -- --port 8083
+pm2 start server.js serverModeFork --watch -- --port 8084
+pm2 start server.js serverModeFork --watch -- --port 8085
