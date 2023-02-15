@@ -12,6 +12,7 @@ import cookieParser from 'cookie-parser'
 import MongoStore from "connect-mongo"
 import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
+import bcrypt from 'bcryptjs';
 
 const app = express();
 const httpServer = new HttpServer(app);
@@ -28,40 +29,54 @@ const usuarios = new userMongo
 // Setear registro y log-in PASSPORT
 
 passport.use('register', new LocalStrategy({
-  passReqToCallback: true    
-}, (req, username, password, done) => {
-  //const { direccion } = req.body
+  passReqToCallback: true
+}, async (req, username, password, done) => {
 
-  const usuario = Array.from(usuarios).find(usuario => usuario.username == username)
-  if (usuario) {
-      return done('el usuario ya esta registrado')
+  try {
+    const usuario = await userMongo.findOne({ username: username }) //vamos a implementar mongo. Acá busco si existe algún usuario con el username que quiero usar
+    console.log(usuario);
+    if (usuario) {
+      console.log('el usuario ya esta registrado')
+      return done(null, false)
+    }
+    let hashPassword = await bcrypt.hash(password, 8) // acá encripto la clave!! 
+
+    const newUser = new userMongo({
+      username: username,
+      password: hashPassword, //la clave va ser esa clave hasheada
+    })
+    console.log(newUser);
+    newUser.save(newUser)
+    done(null, newUser)
+  } catch (error) {
+    console.log(error);
+    done(error)
   }
-
-  const newUser = {
-      username,
-      password,
-      //direccion
-  }
-  Array.from(usuarios).push(newUser)
-  console.log(newUser);
-
-  done(null, newUser)
 }))
 
-passport.use('login', new LocalStrategy((username, password, done) => {
 
-  const usuario = Array.from(usuarios).find(usuario => usuario.username == username)
-  if (!usuario) {
-      return done('no hay usuario', false)
+passport.use('login', new LocalStrategy(async (username, password, done) => {
+
+  try {
+    const usuario = await userMongo.findOne({ username: username }) //vamos a implementar mongo. Acá busco si existe algún usuario con el username que quiero usar
+    console.log(usuario);
+    if (!usuario) {
+      return done('Usuario incorrecto', false)
+    }
+
+    const passwordMatched = await bcrypt.compare(password, usuario.password);
+    if (passwordMatched) {
+
+      return done(null, usuario)
+    }
+    else {
+      console.log("Password incorrecto");
+    }
+
+  } catch (error) {
+    console.log(error);
+    done(error)
   }
-
-  if (usuario.password != password) {
-      return done('password incorrecta', false)
-  }
-
-  usuario.contador = 0
-
-  return done(null, usuario)
 }))
 
 //Serializamos y desaerializamos
@@ -70,12 +85,12 @@ passport.serializeUser((user, done) => {
   done(null, user.username)
 })
 
-passport.deserializeUser(async(username, done) => {
-  try{
-  const usuario = Array.from(usuarios).find(usuario => usuario.username == username)
-  usuario ? done(null, usuario):null;
-  }catch(error){
-    done(error);
+passport.deserializeUser(async (username, done) => {
+  try {
+    let usuario = await userMongo.findOne({ username: username })
+    done(null, usuario)
+  } catch (error) {
+    done(error)
   }
 })
 
@@ -95,7 +110,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge:6000
+    maxAge: 6000
   }
 }))
 
@@ -108,63 +123,63 @@ app.use(passport.session())
 // Rutas de registro 
 
 app.get('/register', (req, res) => {
-    res.render('register')
+  res.render('register')
 })
 
-app.post('/register', passport.authenticate('register', { failureRedirect: '/failregister', successRedirect: '/'}))
+app.post('/register', passport.authenticate('register', { failureRedirect: '/failregister', successRedirect: '/' }))
 
-app.get('/failregister', (req, res)=> {
-    res.render('register-error')
+app.get('/failregister', (req, res) => {
+  res.render('register-error')
 })
 
 
 // Rutas de login 
 
 app.get('/login', (req, res) => {
-    if (req.isAuthenticated()) {
-        res.redirect('/index')
-    }
+  if (req.isAuthenticated()) {
+    res.redirect('/index')
+  }
 
-    res.render('login')
+  res.render('login')
 })
 
 app.post('/login', passport.authenticate('login', { failureRedirect: '/login-error', successRedirect: '/index' }))
 
 app.get('/login-error', (req, res) => {
-    res.render('login-error')
+  res.render('login-error')
 })
 
 // Rutas de index 
 
 function requireAuthentication(req, res, next) {
-    if (req.isAuthenticated()) {
-        next()
-    } else {
-        res.redirect('/login')
-    }
+  if (req.isAuthenticated()) {
+    next()
+  } else {
+    res.redirect('/login')
+  }
 }
 
 app.get('/index', requireAuthentication, (req, res) => {
-    if (!req.user.contador) {
-        req.user.contador = 0
-    }
+  if (!req.user.contador) {
+    req.user.contador = 0
+  }
 
-    req.user.contador++
+  req.user.contador++
 
-    const usuario = Array.from(usuarios).find(usuario => usuario.username == req.user.username)
+  const usuario = Array.from(usuarios).find(usuario => usuario.username == req.user.username)
 
-    res.render('index', {
-        datos: usuario,
-        contador: req.user.contador
-    })
+  res.render('index', {
+    datos: usuario,
+    contador: req.user.contador
+  })
 })
 
 // Ruta de logout 
 
 app.get('/logout', (req, res) => {
-    req.logout(err => {
-        res.redirect('/login')
-    })
+  req.logout(err => {
+    res.redirect('/login')
+  })
 })
 
 
@@ -172,7 +187,7 @@ app.get('/logout', (req, res) => {
 
 
 app.get('/', (req, res) => {
-    res.redirect('/index')
+  res.redirect('/index')
 })
 
 
