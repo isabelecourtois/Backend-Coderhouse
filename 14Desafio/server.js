@@ -4,6 +4,7 @@ import Contenedor from "./Containers/Container.js";
 import { productosNuevos } from "./Containers/mockProductos.js";
 import random from "./routes/random.js";
 //import { userMongo } from "./db/usuarioPassport.js";
+import logger from "./loggers/logger.js"
 
 import express from "express";
 import { Server as HttpServer } from "http";
@@ -281,8 +282,6 @@ app.get("/infolog", (req, res) => {
   <h2>Carpeta del proyecto: ${process.cwd().split("\\").pop()}</h2>`)
 })
 
-
-
 //Socket
 
 io.on("connection", async (socket) => {
@@ -295,7 +294,6 @@ io.on("connection", async (socket) => {
     io.sockets.emit('productos', await productosContenedor.getAll());
   })
 
-
   const mensajes = await mensajesContenedor.getAllNormalizr();
   socket.emit('messages', mensajes);
   socket.on('newMessage', async (data) => {
@@ -303,7 +301,6 @@ io.on("connection", async (socket) => {
     io.sockets.emit("messages", await mensajesContenedor.getAllNormalizr());
   })
   //console.log(mensajes);
-
 })
 
 app.get("/compresion", async (req, res) => {
@@ -316,9 +313,31 @@ app.get("/compresion", async (req, res) => {
   }
 });
 
-//const PORT = args.port || 8080
+app.get('*', (req, res) => {
+  const { url, method } = req
+
+  logger.warn(`Ruta ${method} ${url} no esta implementada`)
+  res.send(`Ruta ${method} ${url} no esta implementada`)
+})
+
+/* const PORT = args.port || 8080
 
 httpServer.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`)
+}) */
+
+const PORT = 8080
+
+const server = app.listen(PORT, err => {
+    if (err) {
+        logger.error(`Error iniciando el server: ${err}`)
+        return
+    }
+
+    logger.info(`Servidor escuchando en el puerto: ${PORT}`)
+})
+
+server.on('error', err => {
+    logger.error(`Error en el servidor: ${err}`)
 })
 }
