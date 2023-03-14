@@ -3,7 +3,7 @@ import Container from "../containers/Container.js";
 import ContainerFirebase from "../containers/ContainerFirebase.js";
 import { serviceAccount } from "../containers/ContainerFirebase.js";
 import ContainerMongo from "../containers/ContainerMongo.js";
-import * as model from "../containers/data/modelsMongo/carrito.js";
+import {carrito} from "../containers/data/modelsMongo/carrito.js";
 import {postCart, deleteCart, getProductsInCart, postProductInCart, deleteProductInCart,} from "../controllers/carrito.js";
 
 
@@ -12,7 +12,7 @@ const cartRouter = Router();
 
 //export const cartContainer = new Container("./containers/data/carts.txt");
 
-let metodoDB = 0;
+let metodoDB = 2;
 let cartContainer = ""
 
 switch (metodoDB) {
@@ -27,7 +27,7 @@ switch (metodoDB) {
         break;
     case 2:
         console.log("MDB");
-        cartContainer = new ContainerMongo("mongodb://localhost:27017/ecommerce", model.carrito);
+        cartContainer = new ContainerMongo(carrito);
         break;
 }
 

@@ -1,6 +1,9 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { Schema } from 'mongoose';
+import * as dotenv from 'dotenv';
+dotenv.config()
+
 
 mongoose.connect(process.env.MONGO_PASSPORT,{
   useNewUrlParser: true,
@@ -12,6 +15,11 @@ mongoose.connect(process.env.MONGO_PASSPORT,{
 const User = new Schema({ 
     username: {type: String, required: true},
     password: {type: String, required: true},
+    address: {type: String, require: true, max: 200},
+    phone: {type: String, require: true, max: 20},
+    cartId:{type: String, require: true},
+    email:{type: String, require: true, max: 30},
+    timestamp:{type: String, require: true}
 })
 
 User.pre('save', async function (next) {
@@ -30,5 +38,6 @@ User.pre('save', async function (next) {
         return next(error);
     }
 });
+
 
 export const userMongo = mongoose.model('userMongo', User);

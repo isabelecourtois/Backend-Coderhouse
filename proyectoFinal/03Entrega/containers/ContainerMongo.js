@@ -4,17 +4,14 @@ import * as model from "./data/modelsMongo/producto.js";
 
 
 class ContainerMongo {
-  constructor(URL, model) {
-    this.URL = URL;
+  constructor(model) {
+    //this.URL = URL;
     this.model = model;
   }
 
   async save(producto) {
     try {
-        await mongoose.connect(this.URL, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-          });
+       
       const saveModel = new this.model(producto);
       return await saveModel.save();
     } catch (error) {
@@ -24,10 +21,10 @@ class ContainerMongo {
 
   async getById(id) {
     try {
-        await mongoose.connect(this.URL, {
+        /* await mongoose.connect(this.URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-          });
+          }); */
       return await this.model.find({ _id: id });
     } catch (error) {
       console.log(error);
@@ -36,10 +33,10 @@ class ContainerMongo {
 
   async getAll() {
     try {
-        await mongoose.connect(this.URL, {
+       /*  await mongoose.connect(this.URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-          });
+          }); */
       return await this.model.find();
     } catch (error) {
       console.log(error);
@@ -48,10 +45,10 @@ class ContainerMongo {
 
   async deleteById(id) {
     try {
-        await mongoose.connect(this.URL, {
+        /* await mongoose.connect(this.URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-          });
+          }); */
       return await this.model.deleteOne({_id: id});
     } catch (error) {
       console.log(error);
@@ -60,10 +57,10 @@ class ContainerMongo {
 
   async update(id, elemento) {
     try {
-        await mongoose.connect(this.URL, {
+        /* await mongoose.connect(this.URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-          });
+          }); */
       return await this.model.updateOne({ _id: id }, elemento);
     } catch (error) {
       console.log(error);

@@ -34,7 +34,7 @@ export async function deleteProductInCart(req, res) {
 export async function postCart(req, res) {
   const newCart = { timestamp: Date.now(), productos: [] };
   const idNew = await cartContainer.save(newCart);
-  res.status(201).json({ status: "ok", newCartId: idNew });
+  res.status(201).json({ status: "ok", numCompra: idNew });
 }
 
 export async function postProductInCart(req, res) {

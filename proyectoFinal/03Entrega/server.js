@@ -6,10 +6,17 @@ import MongoStore from "connect-mongo"
 import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
 import bcrypt from 'bcryptjs';
+import dotenv from 'dotenv'
+import cluster from "cluster";
+import parseArgs from "minimist";
 
 import prodRouter from "./routes/productos.js";
 import cartRouter from "./routes/carrito.js";
+import orderRouter from "./routes/orden.js";
+import { cartContainer } from "./routes/carrito.js";
 import { userMongo } from "./db/usuarioPassport.js";
+import {registerEmail} from "./messages/sendEmail.js"
+import { loggers } from "./loggers/loggers.js";
 
 //ENV
 dotenv.config();
@@ -34,25 +41,45 @@ const usuarios = new userMongo
 passport.use('register', new LocalStrategy({
   passReqToCallback: true
 }, async (req, username, password, done) => {
-
+  const { address, phone, email} = req.body;
+ 
   try {
     const usuario = await userMongo.findOne({ username: username }) //vamos a implementar mongo. Acá busco si existe algún usuario con el username que quiero usar
-    console.log(usuario);
+    loggers.info(usuario);
     if (usuario) {
-      console.log('el usuario ya esta registrado')
+      loggers.info('el usuario ya esta registrado')
       return done(null, false)
     }
     let hashPassword = await bcrypt.hash(password, 8) // acá encripto la clave!! 
-
+    const newCart = { timestamp: Date.now(), productos: [] };
+    const numCompra = await cartContainer.save(newCart);
+    const numCompraId = numCompra._id
+    loggers.info(numCompraId);
     const newUser = new userMongo({
       username: username,
+      address: address,
+      phone: phone,
+      cartId:numCompraId,
+      email:email,
+      timestamp: Date.now(),
       password: hashPassword, //la clave va ser esa clave hasheada
     })
-    console.log(newUser);
-    newUser.save(newUser)
-    done(null, newUser)
+    loggers.info(newUser);
+    await newUser.save()
+    const user4Email = await userMongo.findOne({ email:email})
+
+    //Envío de mail nuevo usuario
+    req.userData = user4Email;
+
+      registerEmail(`<h1>Bienvenido nuevo usuario</h1>
+      <p>Datos<br>Nombre: ${username}
+      <br>Email: ${email}
+      </p>`);
+
+    done(null, user4Email)
+
   } catch (error) {
-    console.log(error);
+    loggers.error(error);
     done(error)
   }
 }))
@@ -62,7 +89,7 @@ passport.use('login', new LocalStrategy(async (username, password, done) => {
 
   try {
     const usuario = await userMongo.findOne({ username: username }) //vamos a implementar mongo. Acá busco si existe algún usuario con el username que quiero usar
-    console.log(usuario);
+    loggers.info(usuario);
     if (!usuario) {
       return done('Usuario incorrecto', false)
     }
@@ -73,11 +100,11 @@ passport.use('login', new LocalStrategy(async (username, password, done) => {
       return done(null, usuario)
     }
     else {
-      console.log("Password incorrecto");
+      loggers.info("Password incorrecto");
     }
 
   } catch (error) {
-    console.log(error);
+    loggers.error(error);
     done(error)
   }
 }))
@@ -193,25 +220,40 @@ app.get('/', (req, res) => {
   res.redirect('/index')
 })
 
+app.get('*', (req, res) => {
+  const { url, method } = req
+
+  loggers.warn(`Ruta ${method} ${url} no esta implementada`)
+  res.send(`Ruta ${method} ${url} no esta implementada`)
+})
+
 
 
 app.use("/api/productos", prodRouter);
 app.use("/api/carrito", cartRouter);
+app.use("/api/pedido", orderRouter);
 
-/* app.use((req, res) => {
-    res.status(404).json({
-      error: -2,
-      descripcion: `ruta '${req.originalUrl}' error  '${req.method}' `,
+
+//ARGS
+const args = parseArgs(process.argv.slice(2));
+console.log(args);
+
+//Cluster y Fork
+const serverM = args.serverMode || "Fork";
+export const PORT = args.port ||process.env.PORT || 8080;
+
+if (serverM === "Cluster" && cluster.isPrimary) {
+  loggers.info(`Servidor express en ${PORT} - <b> PID: ${process.pid}</b> - ${new Date().toLocaleString()}`);
+
+  for (let index = 0; index < 7; index++) {
+    cluster.fork();
+
+    cluster.on("exit", (worker, code, signal) => {
+      loggers.info(`Worker ${worker.process.pid} died: ${new Date().toString()}`)
     });
-  });
-  
-  
-  app.listen(PORT, () => {
-    console.log(`RUN http://localhost:${PORT}`);
-  }); */
-
-const PORT = process.env.PORT || 8080
+  }
+} else {
 
 httpServer.listen(PORT, () => {
-  console.log(`Servidor escuchando en el puerto ${PORT}`)
-})
+  loggers.info(`Servidor escuchando en el puerto ${PORT}`)
+})}
