@@ -101,17 +101,17 @@ passport.deserializeUser(async (username, done) => {
 
 //Cookies & Session
 
-app.use(cookieParser('TeGaneAlan!'))
+app.use(cookieParser(process.env.SECRET))
 const mongoAdvOptions = { useNewUrlParser: true, useUnifiedTopology: true }
 app.use(session({
 
   store: MongoStore.create({
-    mongoUrl: "mongodb+srv://rocleco:rocleco@coderhouse.w04bgms.mongodb.net/?retryWrites=true&w=majority",
+    mongoUrl: process.env.MONGO_COOKIES,
     mongoOptions: mongoAdvOptions
   }),
 
 
-  secret: "TeGaneAlan!",
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {

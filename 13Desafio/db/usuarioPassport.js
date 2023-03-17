@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { Schema } from 'mongoose';
 
-mongoose.connect(process.env.MONGO_PASSPORT,{
+mongoose.connect('mongodb://localhost/base',{
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
