@@ -1,11 +1,13 @@
 import { cartContainer } from "../routes/carrito.js";
+import { userMongo } from "../db/usuarioPassport.js";
+import { userContainer } from "../routes/usuarios.js";
 //import { sendMessage } from "./sendMessage.js";
 import { orderEmail } from "./sendEmail.js";
 
 
  export async function dataOrder(req, res) {
-    const usuario = await usuario.findOne({ username: username })
-    const cart = await cartContainer.getById(user[0].cartId)
+    const usuario = await  userContainer.getById(req.session.passport.usuario)
+    const cart = await cartContainer.getById(usuario[0].cartId)
     res.json({
         user: usuario[0],
         cart: cart[0],
@@ -13,8 +15,8 @@ import { orderEmail } from "./sendEmail.js";
 } 
 
 export async function sendOrder(req, res) {
-    const usuario = await usuario.findOne({ username: username })
-    const cart = await cartContainer.getById(user[0].cartId)
+    const usuario = await  userContainer.getById(req.session.passport.usuario)
+    const cart = await cartContainer.getById(usuario[0].cartId)
 
     // 1. Email
     const buyedProducts = cart[0].productos.map(producto => {
@@ -24,7 +26,7 @@ export async function sendOrder(req, res) {
     const html = `<h1>Nuevo Pedido</h1>
     ${buyedProducts}`;
 
-    await orderEmail(html, usuario[0].nombre, usuario[0].email );
+    await orderEmail(html, usuario[0].username, usuario[0].email );
  
    /*  // 2. Whatsapp
     const whats = {

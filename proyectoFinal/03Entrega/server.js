@@ -54,7 +54,7 @@ passport.use('register', new LocalStrategy({
     const newCart = { timestamp: Date.now(), productos: [] };
     const numCompra = await cartContainer.save(newCart);
     const numCompraId = numCompra._id
-    loggers.info(numCompraId);
+    //loggers.info(numCompraId);
     const newUser = new userMongo({
       username: username,
       address: address,
@@ -64,7 +64,7 @@ passport.use('register', new LocalStrategy({
       timestamp: Date.now(),
       password: hashPassword, //la clave va ser esa clave hasheada
     })
-    loggers.info(newUser);
+    //loggers.info(newUser);
     await newUser.save()
     const user4Email = await userMongo.findOne({ email:email})
 
@@ -220,12 +220,12 @@ app.get('/', (req, res) => {
   res.redirect('/index')
 })
 
-app.get('*', (req, res) => {
+/* app.get('*', (req, res) => {
   const { url, method } = req
 
   loggers.warn(`Ruta ${method} ${url} no esta implementada`)
   res.send(`Ruta ${method} ${url} no esta implementada`)
-})
+}) */
 
 
 
