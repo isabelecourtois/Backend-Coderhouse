@@ -1,9 +1,9 @@
-import { ContenedorSQL } from "../persistence/DAOs/ContainerSQL.js"
-import { optionsSqlite } from "./mysqlconn.js";
-import { productosGuardados } from "../persistence/DAOs/productos.js";
+import ProductosRepo from "../models/repository/productos.js";
 
-export const productosContenedor = new ContenedorSQL(optionsSqlite, "productos");
-productosContenedor.crearTablaProductos()
+
+export const productosContenedor = new ProductosRepo ()
+
+/* productosContenedor.crearTablaProductos()
   .then(() => {
     return productosContenedor.save(productosGuardados)
-  })
+  }) */

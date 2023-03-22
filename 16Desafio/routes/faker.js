@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { productosNuevos } from "../persistence/DAOs/mockProductos.js"
+import { productosNuevos } from "../models/DAOs/mockProductos.js"
 
 const faker =  Router();
 

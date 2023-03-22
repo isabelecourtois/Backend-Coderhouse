@@ -1,4 +1,4 @@
 import express from "express";
-import Contenedor from "../persistence/DAOs/Container.js"
+import Contenedor from "../models/DAOs/Container.js"
 
 export const mensajesContenedor = new Contenedor("./db/mensajes.txt");
