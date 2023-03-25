@@ -1,36 +1,35 @@
-import ProductosDAOMem from "../DAO/productosDAO_mem.js";
-import ProductosDAOMem from "../DAOs/productosDAOFS.js"
-import ProductosDAOMongoose from "../DAO/productosDAO_mongoose.js";
-import { productoSchema } from "../Schemas/productoSchema.js";
+import mensajesDAOFS from "../DAOs/mensajesDAOFS";
+import mensajesDAOMongo from "../DAO/productosDAOMongo";
+import { mensajes } from "../schemas/mensajes.js";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-export default class ProductosDAOFactory {
+export default class mensajesFactory {
   constructor(){
     this.date = Date.now()
   }
 
   getDao() {
-    switch (process.env.PERSISTENCE) {
-      case "mongo":
-        console.log("PERSISTENCE IN MONGO")
-        return new ProductosDAOMongoose(productoSchema);
+    switch (process.env.METODODB) {
+      case "MDB":
+        console.log("MDB")
+        return new mensajesDAOMongo(mensajes);
         break;
-      case "mem":
-        console.log("PERSISTENCE IN MEMORY")
-        return new ProductosDAOMem();
+      case "FS":
+        console.log("FS")
+        return new mensajesDAOFS();
         break;
       default:
-        console.log("PERSISTENCE DEFAULT (MEMORY)")
-        return new ProductosDAOMem();
+        console.log("DEFAULT FS")
+        return new mensajesDAOFS();
         break;
     }
   }
 
-  static getInstance() {
-    if(!this.instance) {
-      this.instance = new ProductosDAOFactory()
+  static getNOC() {
+    if(!this.npc) {
+      this.npc = new mensajesFactory()
     }
-    return this.instance;
+    return this.npc;
   }
 }

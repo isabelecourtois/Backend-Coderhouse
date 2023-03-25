@@ -1,73 +1,81 @@
 import mongoose from "mongoose";
-import * as model from "./data/modelsMongo/producto.js.js";
+mongoose.set("strictQuery", false);
+import { transformarADTO } from "../DTO/mensajesDTO.js";
 
-
-class ContainerMongo {
-  constructor(URL, model) {
-    this.URL = URL;
+export default class mensajesDAOMongo {
+  constructor(model) {
     this.model = model;
   }
 
-  async save(producto) {
+  #generateDAOCompatible(mongooseOBJ) {
+    if (Array.isArray(mongooseOBJ)) {
+      return mongooseOBJ.map((m) => {
+        return { id: m._id, mail: m.mail, nombre: m.nombre, apellido: m.apellido, edad: m.edad, alias: m.alias, avatar: m.avatar, message: m.message, dateAndTime: m.dateAndTime };
+      });
+    } else {
+      return {
+        id: mongooseOBJ._id,
+        mail: mongooseOBJ.mail,
+        nombre: mongooseOBJ.nombre,
+        apellido: mongooseOBJ.apellido,
+        edad: mongooseOBJ.edad,
+        alias: mongooseOBJ.alias,
+        avatar: mongooseOBJ.avatar,
+        message: mongooseOBJ.message,
+        dateAndTime: mongooseOBJ.dateAndTime,
+      };
+    }
+  }
+
+  async save(object) {
+
     try {
-        await mongoose.connect(this.URL, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-          });
-      const saveModel = new this.model(producto);
-      return await saveModel.save();
+      const saveModel = new this.model(object);
+      const saved = await saveModel.save();
+      return transformarADTO(this.#generateDAOCompatible(saved));
     } catch (error) {
       console.log(error);
-    } 
+    }
   }
 
   async getById(id) {
     try {
-        await mongoose.connect(this.URL, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-          });
-      return await this.model.find({ _id: id });
+      return transformarADTO(this.#generateDAOCompatible(await this.model.findOne({ _id: id })));
     } catch (error) {
       console.log(error);
-    } 
+    }
+  }
+
+  async update(id, newObject) {
+    try {     
+      return await this.model.updateOne({ _id: id }, newObject);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async getAll() {
     try {
-        await mongoose.connect(this.URL, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-          });
-      return await this.model.find();
+      const mensajes = await this.model.find();
+      return transformarADTO(this.#generateDAOCompatible(mensajes));
     } catch (error) {
       console.log(error);
-    } 
+    }
   }
 
   async deleteById(id) {
     try {
-        await mongoose.connect(this.URL, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-          });
-      return await this.model.deleteOne({_id: id});
+      return await this.model.deleteOne({ _id: id });
     } catch (error) {
       console.log(error);
-    } 
+    }
   }
 
-  async update(id, elemento) {
+  async deleteAll() {
     try {
-        await mongoose.connect(this.URL, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-          });
-      return await this.model.updateOne({ _id: id }, elemento);
+      return await this.model.deleteMany({});
     } catch (error) {
       console.log(error);
-    } 
+    }
   }
-
 }
-export default ContainerMongo

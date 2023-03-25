@@ -10,20 +10,19 @@ export default class productosMongo {
   #generateDAOCompatible(mongooseOBJ) {
     if (Array.isArray(mongooseOBJ)) {
       return mongooseOBJ.map((m) => {
-        return { id: m._id, nombre: m.nombre, foto: m.foto, precio: m.precio };
+        return { id: m._id, producto: m.producto, precio : m.precio , thumbnail: m.thumbnail };
       });
     } else {
       return {
         id: mongooseOBJ._id,
-        nombre: mongooseOBJ.nombre,
-        foto: mongooseOBJ.foto,
-        precio: mongooseOBJ.precio,
+        producto: mongooseOBJ.producto,
+        precio : mongooseOBJ.precio ,
+        thumbnail: mongooseOBJ.thumbnail,
       };
     }
   }
 
   async save(object) {
-    // WHEN ERROR, UNDEFINED IS RETURNED
     try {
       const saveModel = new this.model(object);
       const saved = await saveModel.save();
@@ -34,7 +33,7 @@ export default class productosMongo {
   }
 
   async getById(id) {
-    // WHEN NO ROW IS FOUND RETURNS EMPTY ARRAY
+
     try {
       return transformarADTO(this.#generateDAOCompatible(await this.model.findOne({ _id: id })));
     } catch (error) {
@@ -51,7 +50,7 @@ export default class productosMongo {
   }
 
   async getAll() {
-    // RETURNS ALL ROWS IN ARRAY, EMPTY WHEN EMPTY COLLECTION
+
     try {
       const productos = await this.model.find({});
       return transformarADTO(this.#generateDAOCompatible(productos));
@@ -61,7 +60,7 @@ export default class productosMongo {
   }
 
   async deleteById(id) {
-    // RETURNS LIKE THIS OBJ { acknowledged: true, deletedCount: 1 }
+
     try {
       return await this.model.deleteOne({ _id: id });
     } catch (error) {
@@ -70,7 +69,7 @@ export default class productosMongo {
   }
 
   async deleteAll() {
-    // RETURNS LIKE THIS OBJ { acknowledged: true, deletedCount: 1 }
+
     try {
       return await this.model.deleteMany({});
     } catch (error) {

@@ -1,9 +1,9 @@
 export default class productoDTO {
-    constructor({id, nombre, foto, precio}) {
+    constructor({id, producto, precio, thumbnail}) {
         this.id = id;
-        this.nombre = nombre;
-        this.foto = foto;
+        this.producto = producto;
         this.precio = precio;
+        this.thumbnail = thumbnail;
     }
 }
 

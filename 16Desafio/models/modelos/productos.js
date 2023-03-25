@@ -1,15 +1,15 @@
-export default class Producto {
+export default class producto {
 
     #id
-    #nombre
-    #foto
+    #producto
     #precio
+    #thumbnail
 
-    constructor({id, nombre, foto, precio}) {
+    constructor({id, producto, precio, thumbnail}) {
         this.#id = id;
-        this.#nombre = nombre;
-        this.#foto = foto;
+        this.#producto = producto;
         this.#precio = precio;
+        this.#thumbnail = thumbnail;
     }
 
     get id() {
@@ -20,20 +20,12 @@ export default class Producto {
         this.#id = id;
     }
 
-    get nombre() {
-        return this.#nombre;
+    get producto() {
+        return this.#producto;
     }
 
-    set nombre(nombre) {
-        this.#nombre = nombre;
-    }
-
-    get foto() {
-        return this.#foto;
-    }
-
-    set foto(foto) {
-        this.#foto = foto;
+    set producto(producto) {
+        this.#producto = producto;
     }
 
     get precio() {
@@ -44,8 +36,16 @@ export default class Producto {
         this.#precio = precio;
     }
 
+    get thumbnail() {
+        return this.#thumbnail;
+    }
+
+    set thumbnail(thumbnail) {
+        this.#thumbnail = thumbnail;
+    }
+
     datosProducto() {
-        return {id: this.#id, nombre: this.#nombre, foto: this.#foto, precio: this.#precio};
+        return {id: this.#id, producto: this.#producto, precio: this.#precio, thumbnail: this.#thumbnail};
     }
 
     test() {

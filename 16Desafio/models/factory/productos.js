@@ -13,19 +13,22 @@ export default class productosFactory {
 
         switch (process.env.METODODB) {
 
+            case "FS":
+                console.log("FS")
+                return new productosFS();
+                break;
+                
             case "MDB":
                 console.log("MDB")
                 return new productosMongo(productos);
                 break;
-            case "FS":
-                console.log("FS")
-                return new productosFS("../../db/productos.txt");
-                break;
+            
             default:
                 console.log("DEFAULT FS")
-                return new productosFS("../../db/productos.txt");
+                return new productosFS();
                 break;
         }
+        
     }
 
     static getNPC() {
@@ -35,3 +38,4 @@ export default class productosFactory {
         return this.npc;
     }
 }
+console.log(productosFactory);

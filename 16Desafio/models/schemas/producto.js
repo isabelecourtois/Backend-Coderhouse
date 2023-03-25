@@ -6,9 +6,10 @@ const productsCollName = "productos";
 
 const productsSchema = new mongoose.Schema({
     id: {type: mongoose.Schema.Types.ObjectId},
-    nombre: {type: String, require: true, max: 150},
-    foto: {type: String, require: true, max: 200},
-    precio: {type: Number, require: true}
+    producto: {type: String, require: true, max: 150},
+    precio: {type: Number, require: true},
+    thumbnail: {type: String, require: true, max: 200}
+    
 })
 
 const connection = mongoose.createConnection(process.env.MONGO_CONTAINER, {
