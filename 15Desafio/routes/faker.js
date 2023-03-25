@@ -1,17 +1,8 @@
 import { Router } from "express";
-import { productosNuevos } from "../Containers/mockProductos.js"
+import { getFaker } from "../controllers/faker.js";
 
 const faker =  Router();
 
-faker.get("/productos-test", async (req, res) => {
-  try {
-    const productos = await productosNuevos(5);
-    res.render("index", { productos: productos, });
-    console.log(productos);
-  } catch (error) {
-    console.log(error);
-  }
-
-});
+faker.get("/productos-test", getFaker);
 
 export default faker
