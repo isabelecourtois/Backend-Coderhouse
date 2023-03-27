@@ -6,7 +6,8 @@ import { orderEmail } from "./sendEmail.js";
 
 
  export async function dataOrder(req, res) {
-    const usuario = await  userContainer.getById(req.session.passport.usuario)
+    const usuario = await  userContainer.getById(req.session)
+    console.log(usuario);
     const cart = await cartContainer.getById(usuario[0].cartId)
     res.json({
         user: usuario[0],

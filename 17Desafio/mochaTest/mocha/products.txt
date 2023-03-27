@@ -1,0 +1,26 @@
+[
+  {
+    "producto": "Curso1",
+    "precio": 100,
+    "thumbnail": "https://www.curso1.com",
+    "id": 0
+  },
+  {
+    "producto": "Curso",
+    "precio": 100,
+    "thumbnail": "https://www.curso.com",
+    "id": 1
+  },
+  {
+    "producto": "Curso3",
+    "precio": 100,
+    "thumbnail": "https://www.curso3.com",
+    "id": 2
+  },
+  {
+    "producto": "Curso4",
+    "precio": 100,
+    "thumbnail": "https://www.curso4.com",
+    "id": 3
+  }
+]
