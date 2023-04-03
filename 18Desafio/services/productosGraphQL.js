@@ -9,22 +9,22 @@ export default class productosServices {
     }
 
     async getProducts () { 
-        return await productos.getProducts()
+        return await productos.getAll()
     }
     
     async postProduct ( {datos} ) { 
         let obj = {...datos}
-        return await productos.postProduct( obj )
+        return await productos.save( obj )
     }
     
     async updateProduct ( {datos} ) { 
         let obj = {...datos}
-        return await productos.updateProduct( obj )
+        return await productos.update( obj )
     }
     
     async deleteProduct ( {datos} ) { 
         let obj = {...datos}
-        return await productos.deleteProduct( obj.id )
+        return await productos.deleteById( obj.id )
     }
     
 }
