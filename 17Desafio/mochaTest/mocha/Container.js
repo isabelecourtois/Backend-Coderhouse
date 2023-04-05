@@ -133,7 +133,6 @@ async deleteAll() {
 
             let indice = this.productos.indexOf(objetoActualizado);
             objeto.id = parseInt(id);
-            objeto.timestamp = Date.now();
             this.productos[indice] = objeto;
             fs.writeFileSync(this.ruta, JSON.stringify(this.productos, null, 2));
             return objeto;
@@ -145,31 +144,6 @@ async deleteAll() {
     }
     
 }
-
- /* IdExists(id) {
-    let response = false;
-    this.productos.forEach((element, index) => {
-      if (element.id == id) {
-        response = index;
-      }
-    });
-    return response;
-  }
-
-  async update(id, newObject) {
-    let index = this.IdExists(id);
-    if (index) {
-      this.productos[index] = { ...newObject, id: Number(id) };
-      await fs.promises.writeFile(
-        this.ruta,
-        JSON.stringify(this.producto)
-      );
-      console.log("se actualizo");
-      return Promise.resolve(id);
-    } else {
-      console.log("no existe el id");
-    }
-  } */
 }; 
 
 export default Container;

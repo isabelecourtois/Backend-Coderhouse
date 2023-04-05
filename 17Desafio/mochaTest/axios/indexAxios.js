@@ -8,12 +8,10 @@ await axios(`${url}`)
     .then( resp => { console.log(resp.data) } )
     .catch( err => { console.log(err) } )
 
-
-
 await axios.post(`${url}`,    
     {
         producto: "GoPro2",
-        precio: "3800",
+        precio: 3800,
         thumbnail: "https://cdn2.iconfinder.com/data/icons/geest-travel-kit/128/travel_journey-20-512.png",
     }
     ).then( resp => { console.log(resp.data)
@@ -30,11 +28,11 @@ await axios.put(`${url}${idNew}`, {
     ).then( resp => { console.log(resp.data) } )
     .catch( err => { console.log(err) } )
 
-await axios(`${url}`)
+    await axios(`${url}`)
     .then( resp => { console.log(resp.data) } )
     .catch( err => { console.log(err) } )
 
-await axios.delete(`${url}${idNew}`
+await axios.delete(`${url}${response.data.id}`
     ).then( resp => { console.log(resp.data) } )
     .catch( err => { console.log(err) } )
 

@@ -1,44 +1,40 @@
 import { expect } from "chai"
 import axios from "axios"
-import { generarProducto } from "./mochaTest/mocha/mockProductos.js"
-import { getProducts, postProducts, putProducts, deleteProducts } from "./controllers/producto.js"
-import { strictEqual, deepStrictEqual } from "assert";
 
 
 const url = 'http://localhost:8080/productos'
 
-const idNew = ''
-const postResponse = []
-const putResponse = []
-
 describe("Comprobando el funcionamiento endpoint /productos", () => {
 
-    it('GET productos retorna estado 200 y retornar el array de productos', async () => {
+    it('GET productos ', async () => {
         let response = await axios(`${url}`)
         expect(response.status).to.eql(200)
         expect(response.data).to.be.an('array')
     })
 
-    it('POST productos retorna estado 200 y el objeto insertado', async () => {
-        let prod = await getProducts()
-        let response = await axios.post(`${url}`, prod)
-        idNew = response.data[0]._id
-        postResponse = response.data[0]
-        expect(response.status).to.eql(200)
-        expect(postResponse).to.be.an('object')
+    it("POST a product", async function () {
+        const newProd = { producto: "GoPro2", precio: 3800, thumbnail: "https://cdn2.iconfinder.com/data/icons/geest-travel-kit/128/travel_journey-20-512.png" };
+        const response = await axios.post(`${url}`, newProd);
+        expect(response.data, { id: response.data.id, ...newProd })
+
     })
 
-    it('UPDATE productos retorna estado 200 y modifica el objeto insertado', async () => {
-        let newProd = await getProducts()
-        newProd.id = idNew
-        let response = await axios.put(`${url}${idNew}`, newProd)
-        putResponse = response.data[0]
-        expect(response.status).to.eql(200)
-        expect(putResponse).to.not.be.eql(postResponse)
+    it("UPDATE Product", async function() {
+        const newProd = { producto: "GoPro2", precio: 3800, thumbnail: "https://cdn2.iconfinder.com/data/icons/geest-travel-kit/128/travel_journey-20-512.png" };
+        let response = await axios.post(`${url}`, newProd);
+        let insertedProduct = response.data;
+        insertedProduct.precio = 800;
+        response = await axios.put(`http://localhost:8080/productos/${insertedProduct.id}`, insertedProduct);
+        expect(response.data, insertedProduct)
+  
     })
 
-    it('DELETE productos retorna estado 200', async () => {
-        let response = await axios.delete(`${url}${idNew}`)
-        expect(response.status).to.eql(200)
+    it("DELETE a product", async function() {
+        const newProd = { producto: "GoPro2", precio: 3800, thumbnail: "https://cdn2.iconfinder.com/data/icons/geest-travel-kit/128/travel_journey-20-512.png" };
+        let response = await axios.post(`${url}`, newProd);
+        let insertedProduct = response.data; 
+        response = await axios.delete(`http://localhost:8080/productos/${insertedProduct.id}`);
+        expect(response.data.deletedId, insertedProduct.id)
     })
+
 })

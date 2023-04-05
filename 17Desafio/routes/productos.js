@@ -15,6 +15,6 @@ prodRouter.post("/productos", postProducts);
 
 prodRouter.put("/productos/:id", putProducts);
 
-prodRouter.delete("productos/:id", deleteProducts);
+prodRouter.delete("/productos/:id", deleteProducts);
 
 export default prodRouter;
