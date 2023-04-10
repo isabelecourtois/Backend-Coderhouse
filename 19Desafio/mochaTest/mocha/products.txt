@@ -1,0 +1,38 @@
+[
+  {
+    "producto": "Curso5",
+    "thumbnail": "https://www.curso1.com",
+    "precio": 500,
+    "id": 1
+  },
+  {
+    "producto": "Curso9",
+    "precio": 4100,
+    "thumbnail": "https://www.curso9.com",
+    "id": 2
+  },
+  {
+    "producto": "Test Mocha Product",
+    "thumbnail": "http://www.axios.com/thumb.jpg",
+    "precio": 30000,
+    "id": 3
+  },
+  {
+    "producto": "Test Mocha Product",
+    "thumbnail": "http://www.axios.com/thumb.jpg",
+    "precio": 30000,
+    "id": 4
+  },
+  {
+    "producto": "Test Mocha Product",
+    "thumbnail": "http://www.axios.com/thumb.jpg",
+    "precio": 30000,
+    "id": 5
+  },
+  {
+    "producto": "Test Mocha Product",
+    "thumbnail": "http://www.axios.com/thumb.jpg",
+    "precio": 30000,
+    "id": 6
+  }
+]
