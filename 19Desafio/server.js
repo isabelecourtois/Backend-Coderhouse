@@ -16,7 +16,7 @@ import parseArgs from "minimist";
 //import faker from "./routes/faker.js"
 //import info from "./routes/info.js"
 import userRouter from "./routes/usuarios.js"
-import prodRouter from "./routes/productos.js";
+import {prodRouter} from "./routes/productos.js";
 //import routerProductosGraphql from "./routes/productosGraphQL.js"
 
 //Koa
@@ -25,6 +25,7 @@ import { koaBody } from "koa-body"
 import serve from "koa-static"
 import render from "koa-ejs"
 import path from "path"
+import mount from "koa-mount"
 
 dotenv.config();
 
@@ -82,10 +83,11 @@ app.use(passport.session())
 
 //app.use("/api/", random);
 //app.use("/api/", faker);
-app.use(prodRouter);
+app.use('/productos/', prodRouter.routes(), prodRouter.allowedMethods() );
 //app.use("/", info);
-app.use(userRouter)
+app.use(mount(userRouter));
 //app.use("/productosGraphql/", routerProductosGraphql);
+
 
 //Socket
 

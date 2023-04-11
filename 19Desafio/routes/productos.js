@@ -10,12 +10,12 @@ const prodRouter = Router({prefix: '/productos'});
 
 export const prodContainer = new Container("./mochaTest/mocha/products.txt");
 
-prodRouter.get("/productos", getProducts);
+prodRouter.get("/", getProducts);
 
-prodRouter.post("/productos", postProducts);
+prodRouter.post("/", postProducts);
 
-prodRouter.put("/productos/:id", putProducts);
+prodRouter.put("/:id", putProducts);
 
-prodRouter.delete("productos/:id", deleteProducts);
+prodRouter.delete("/:id", deleteProducts);
 
-export default prodRouter;
+export {prodRouter};
