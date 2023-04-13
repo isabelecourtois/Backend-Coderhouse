@@ -25,13 +25,16 @@ import { koaBody } from "koa-body"
 import serve from "koa-static"
 import render from "koa-ejs"
 import path from "path"
+import KoaRouter from'koa-router';
 import mount from "koa-mount"
+import compose from 'koa-compose'
 
 dotenv.config();
 
 export const args = parseArgs(process.argv.slice(2));
 
 const app = new Koa();
+//const router = new KoaRouter();
 const httpServer = new HttpServer(app);
 const io = new IOServer(httpServer);
 
@@ -59,15 +62,6 @@ render(app, {
   debug: true
 });
 
-//User es lo que tiene 
-/* app.use(async function (ctx) {
-  await ctx.render('user');
-}); */
-
-/* const pug = new Pug({
-    viewPath: path.resolve(__dirname, './views'),
-    app: app
-}) */
 
 //Cookies & Session
 
@@ -81,11 +75,16 @@ app.use(passport.session())
 
 //Rutas
 
+const middleware = compose([prodRouter.allowedMethods(),
+  prodRouter.routes(),userRouter.allowedMethods(),
+  userRouter.routes(),])
+
 //app.use("/api/", random);
 //app.use("/api/", faker);
-app.use('/productos/', prodRouter.routes(), prodRouter.allowedMethods() );
+//app.use(router.routes()).use(router.allowedMethods());
+app.use(mount(middleware));
 //app.use("/", info);
-app.use(mount(userRouter));
+//app.use(mount(userRouter));
 //app.use("/productosGraphql/", routerProductosGraphql);
 
 

@@ -31,7 +31,7 @@ export function getLoginError (ctx)  {
 
 // Rutas de index 
 
-export function requireAuthentication(ctx) {
+export function requireAuthentication(ctx, next) {
     if (ctx.isAuthenticated()) {
         next()
     } else {
