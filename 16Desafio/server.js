@@ -54,6 +54,7 @@ app.use(userRouter)
 io.on("connection", async (socket) => {
 
   const productos = await productosContenedor.getAll();
+  console.log(productos);
   socket.emit('productos', productos);
   socket.on("newProduct", async (data) => {
     await productosContenedor.save(data);

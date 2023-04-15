@@ -14,6 +14,7 @@ export default class ProductosRepo {
 
     async getAll() {
         const productosdto = await this.dao.getAll()
+        console.log(productosdto);
         return productosdto.map(p => new producto(p))
     }
 
