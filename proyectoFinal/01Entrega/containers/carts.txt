@@ -1,14 +1,15 @@
 [
   {
-    "timestamp": 1671340203167,
+    "timestamp": 1681615610122,
     "productos": [
       {
-        "timestamp": 2222222222,
-        "nombre": "Curso2",
-        "codigo": "ab2222",
-        "foto": "https://www.curso2.com",
-        "precio": 200,
-        "stock": 20,
+        "timestamp": 1681615375852,
+        "nombre": "xxxx",
+        "descripcion": "Curso1",
+        "codigo": "ab1111",
+        "foto": "https://www.curso1.com",
+        "precio": 10000,
+        "stock": 10,
         "id": 1
       }
     ],

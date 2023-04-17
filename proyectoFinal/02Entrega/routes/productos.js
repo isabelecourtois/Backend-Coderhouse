@@ -12,7 +12,7 @@ const prodRouter = Router();
 
 //export const prodContainer = new Container("./containers/data/products.txt");
 
-let metodoDB = 0;
+let metodoDB = 2;
 let prodContainer = ""
 
 switch (metodoDB) {

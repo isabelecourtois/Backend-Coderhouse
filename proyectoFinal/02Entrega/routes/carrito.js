@@ -12,7 +12,7 @@ const cartRouter = Router();
 
 //export const cartContainer = new Container("./containers/data/carts.txt");
 
-let metodoDB = 0;
+let metodoDB = 2;
 let cartContainer = ""
 
 switch (metodoDB) {
