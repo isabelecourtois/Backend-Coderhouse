@@ -1,0 +1,22 @@
+{"level":"warn","message":"Ruta GET /socket.io/socket.io.js no esta implementada"}
+{"level":"warn","message":"Ruta GET /socket.io/socket.io.js no esta implementada"}
+{"level":"warn","message":"Ruta GET /socket.io/socket.io.js no esta implementada"}
+{"level":"warn","message":"Ruta GET /socket.io/socket.io.js no esta implementada"}
+{"level":"warn","message":"Ruta GET /socket.io/?EIO=4&transport=polling&t=ORnw1-e no esta implementada"}
+{"level":"warn","message":"Ruta GET /socket.io/?EIO=4&transport=polling&t=ORnw3SN no esta implementada"}
+{"level":"warn","message":"Ruta GET /socket.io/?EIO=4&transport=polling&t=ORnw4vz no esta implementada"}
+{"level":"warn","message":"Ruta GET /socket.io/?EIO=4&transport=polling&t=ORnw6No no esta implementada"}
+{"level":"warn","message":"Ruta GET /socket.io/?EIO=4&transport=polling&t=ORnw7rP no esta implementada"}
+{"level":"warn","message":"Ruta GET /socket.io/?EIO=4&transport=polling&t=ORnw9JD no esta implementada"}
+{"level":"warn","message":"Ruta GET /socket.io/socket.io.js no esta implementada"}
+{"level":"warn","message":"Ruta GET /socket.io/socket.io.js no esta implementada"}
+{"level":"warn","message":"Ruta GET /pedido no esta implementada"}
+{"level":"warn","message":"Ruta GET /api/pedido no esta implementada"}
+{"level":"warn","message":"Ruta GET /api/productos no esta implementada"}
+{"level":"warn","message":"Ruta GET /api/productos/1 no esta implementada"}
+{"level":"warn","message":"Ruta GET /api/productos no esta implementada"}
+{"level":"warn","message":"Ruta GET /api/productos no esta implementada"}
+{"level":"error"}
+{"code":"EAUTH","command":"AUTH PLAIN","level":"error","response":"535-5.7.8 Username and Password not accepted. Learn more at\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials l14-20020a7bc44e000000b003f195d2f1a9sm26248074wmi.15 - gsmtp","responseCode":535}
+{"code":"EAUTH","command":"AUTH PLAIN","level":"error","response":"535-5.7.8 Username and Password not accepted. Learn more at\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials t13-20020a7bc3cd000000b003f173c566b5sm30796585wmj.5 - gsmtp","responseCode":535}
+{"code":"EAUTH","command":"AUTH PLAIN","level":"error","response":"535-5.7.8 Username and Password not accepted. Learn more at\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials z3-20020adff1c3000000b002fb9e73d5e5sm26637235wro.60 - gsmtp","responseCode":535}
