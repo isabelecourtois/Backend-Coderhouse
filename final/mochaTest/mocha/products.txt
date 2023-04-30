@@ -1,0 +1,9 @@
+[
+  {
+    "producto": "Curso9",
+    "precio": 4100,
+    "thumbnail": "https://www.curso9.com",
+    "id": 2
+  },
+
+]
