@@ -1,4 +1,5 @@
 import fs from "fs";
+import { loggers } from "./loggers/loggers.js";
 
 class Container {
 
@@ -32,7 +33,7 @@ async save(producto){
         await fs.promises.writeFile(this.ruta, JSON.stringify(this.productos, null, 2));
     }
     catch (error) {
-        console.log("Error en save()")      
+        loggers.error("Error en save()")      
         
     }
 
@@ -48,7 +49,7 @@ async getById(id) {
         return prodEncontrado;
     }
     catch(error) {
-        console.log ("Error getById()");
+        loggers.error ("Error getById()");
     }
 }
 
@@ -58,7 +59,7 @@ async getAll() {
       this.productos = JSON.parse(data);
       return this.productos;
     } catch (err) {
-      console.log("error en getAll");
+        loggers.error("error en getAll");
     }
   }
 
@@ -69,7 +70,7 @@ async getAll() {
         return deleteFiles
     }
     catch(error){
-        console.log("Error en delete()" )
+        loggers.error("No se pudo borrar()" )
     }
 }
 
@@ -82,12 +83,8 @@ async deleteById(id) {
 
  
          if (objetoBorrado === undefined) {
- 
-             return {error: 'Producto no encontrado'};
-             
- 
+             return {error: 'Ups, algo salió mal'};
          } else {
- 
              let indice = this.productos.indexOf(objetoBorrado);
              this.productos.splice(indice,1);
              fs.writeFileSync(this.ruta, JSON.stringify(this.productos, null, 2));
@@ -96,7 +93,7 @@ async deleteById(id) {
          }
      }
      catch (error) {
-         return {error: 'No se pudo borrar el objeto con ese ID'};
+         return {error: 'Ups, algo salió mal'};
      }
      
  }
@@ -107,16 +104,15 @@ async deleteAll() {
     await fs.promises.unlink(this.ruta)
         try {
            
-            console.log ("Se borró el archivo")
+            loggers.info ("Se borró el archivo")
         }
         catch(error) {
-            console.log("Error en deleteAll()")
+            loggers.error ("Error en deleteAll()")
         }
  }
 
  async update(id, objeto) {
 
-   // let array = this.getAll();
 
    try {
     const data = await fs.promises.readFile(this.ruta, "utf-8");
@@ -126,7 +122,7 @@ async deleteAll() {
 
         if (objetoActualizado === undefined) {
 
-            return {error: 'Producto no encontrado'};
+            return {error: 'Ups, algo salió mal'};
             
 
         } else {
@@ -141,7 +137,7 @@ async deleteAll() {
         }
     }
     catch (error) {
-        return {error: 'No se pudo actualizar el objeto con ese ID'};
+        return {error: 'Ups, algo salió mal'};
     }
     
 }

@@ -1,16 +1,14 @@
-// Use at least Nodemailer v4.1.0
 import nodemailer from 'nodemailer';
+import { loggers } from "./loggers/loggers.js";
 
-// Generate SMTP service account from ethereal.email
 nodemailer.createTestAccount((err, account) => {
     if (err) {
-        console.error('Failed to create a testing account. ' + err.message);
+        console.error('Ups, algo salió mal. ' + err.message);
         return process.exit(1);
     }
 
-    console.log('Credentials obtained, sending message...');
+    loggers.info('Mensaje enviado');
 
-    // Create a SMTP transporter object
     let transporter = nodemailer.createTransport({
         host: account.smtp.host,
         port: account.smtp.port,
@@ -21,25 +19,23 @@ nodemailer.createTestAccount((err, account) => {
         }
     });
 
-    console.log(account);
+    loggers.info(account);
 
-    // Message object
     let message = {
-        from: 'Sender Name <sender@example.com>',
-        to: 'Recipient <recipient@example.com>',
+        from: 'Sender Name <hola@gmail.com>',
+        to: 'Recipient <hello@gmail.com>',
         subject: 'Nodemailer is unicode friendly ✔',
         text: 'Hello to myself! only in txt',
-        html: '<p><b>Hello</b> to myself!</p>'
+        html: '<p><b>Hello</b> hello</p>'
     };
 
     transporter.sendMail(message, (err, info) => {
         if (err) {
-            console.log('Error occurred. ' + err.message);
+            loggers.error('Ups, algo salió mal ' + err.message);
             return process.exit(1);
         }
 
-        console.log('Message sent: %s', info.messageId);
-        // Preview only available when sending through an Ethereal account
-        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+        loggers.info('Message sent: %s', info.messageId);
+        loggers.info('Preview URL: %s', nodemailer.getTestMessageUrl(info));
     });
 });

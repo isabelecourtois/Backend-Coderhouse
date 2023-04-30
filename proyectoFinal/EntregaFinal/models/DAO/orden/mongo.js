@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 mongoose.set("strictQuery", false);
+import { loggers } from "../../../loggers/loggers.js";
 import { transformarDTO } from "../../DTO/orden.js";
 
 export default class ordenMongo {
@@ -29,18 +30,17 @@ export default class ordenMongo {
   }
 
   async save(object) {
-    // WHEN ERROR, UNDEFINED IS RETURNED
     try {
       const saveModel = new this.model(object);
       const saved = await saveModel.save();
       return transformarDTO(this.generateDAOCompatible(saved));
     } catch (error) {
-      console.log(error);
+      loggers.error(error);
     }
   }
 
   async getById(id) {
-    // WHEN NO ROW IS FOUND RETURNS NULL
+
     try {
       let find = await this.model.findOne({ _id: id });
       return find
@@ -49,7 +49,7 @@ export default class ordenMongo {
           )
         : null;
     } catch (error) {
-      console.log(error);
+      loggers.error(error);
     }
   }
 
@@ -59,36 +59,33 @@ export default class ordenMongo {
       await this.model.updateOne({ _id: id }, newObject);
       return transformarDTO({ id: id, ...newObject });
     } catch (error) {
-      console.log(error);
+      loggers.error(error);
     }
   }
 
   async getAll() {
-    // RETURNS ALL ROWS IN ARRAY, EMPTY WHEN EMPTY COLLECTION
     try {
       const productos = await this.model.find();
       return transformarDTO(this.generateDAOCompatible(productos));
     } catch (error) {
-      console.log(error);
+      loggers.error(error);
     }
   }
 
   async deleteById(id) {
-    // RETURNS LIKE THIS OBJ { acknowledged: true, deletedCount: 1 }
     try {
       await this.model.deleteOne({ _id: id });
       return id;
     } catch (error) {
-      console.log(error);
+      loggers.error(error);
     }
   }
 
   async deleteAll() {
-    // RETURNS LIKE THIS OBJ { acknowledged: true, deletedCount: 1 }
     try {
       return await this.model.deleteMany({});
     } catch (error) {
-      console.log(error);
+      loggers.error(error);
     }
   }
 }

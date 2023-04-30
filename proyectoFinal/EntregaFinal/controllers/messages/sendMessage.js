@@ -1,4 +1,5 @@
 import TwilioSDK from 'twilio';
+import { loggers } from "./loggers/loggers.js";
 import dotenv from 'dotenv';
 dotenv.config()
 
@@ -8,7 +9,7 @@ export async function ordenMess(message) {
     try {
         message = await client.messages.create(message)
      } catch (error) {
-        console.log(error)
+      loggers.error(error)
      }
 
 }

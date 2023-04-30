@@ -36,7 +36,7 @@ export default class carroSer {
   async deleteProductoCarro(cartId, productId) {
     const cart = await carroRepo.getById(cartId);
     let flag = false;
-    //DELETE ONLY THE FIRST OCURRANCE.
+
     const newproductos = cart.productos.filter((producto) => {
       if (producto.id == productId && flag == false) {
         flag = true;

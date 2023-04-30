@@ -1,4 +1,5 @@
 import { transformarDTO } from "../../DTO/usuario.js";
+import { loggers } from "../../../loggers/loggers.js";
 
 export default class usuarioMem {
   constructor() {
@@ -41,7 +42,7 @@ export default class usuarioMem {
         return null;
       }
     } catch (error) {
-      console.log(error);
+      loggers.error(error);
     }
   }
 

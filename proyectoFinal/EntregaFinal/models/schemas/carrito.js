@@ -15,5 +15,4 @@ const connection = mongoose.createConnection(process.env.MONGO_CONTAINER, {
     useUnifiedTopology: true
 })
 
-//export const carts = mongoose.model(cartsCollName, cartsSchema);
 export const carroSchema = connection.model(carroCN, Schema);

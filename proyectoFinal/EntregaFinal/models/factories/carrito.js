@@ -1,6 +1,7 @@
 import carroMem from "../DAO/carrito/memoria.js";
 import carroMongo from "../DAO/carrito/mongo.js";
 import { carroSchema } from "../schemas/carrito.js";
+import { loggers } from "../../loggers/loggers.js";
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -15,15 +16,15 @@ export default class carroFactory {
   getDao() {
     switch (process.env.PERSISTENCE) {
       case "mongo":
-        console.log("PERSISTENCE IN MONGO");
+        loggers.info("Carrito en Mongo");
         return new carroMongo(carroSchema);
         break;
       case "mem":
-        console.log("PERSISTENCE IN MEMORY");
+        loggers.info("Carrito en Memoria");
         return new carroMem();
         break;
       default:
-        console.log("PERSISTENCE DEFAULT (MEMORY)");
+        loggers.info("Carrito Default");
         return new carroMem();
         break;
     }

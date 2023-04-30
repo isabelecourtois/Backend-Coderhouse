@@ -1,11 +1,12 @@
 import { createTransport } from 'nodemailer';
+import { loggers } from "../../loggers/loggers.js";
 import dotenv from 'dotenv';
 dotenv.config();
 
 const EMAIL_ACCOUNT = process.env.EMAIL
 const EMAIL_PASSWORD = process.env.PASSWORD;
 
-console.log(EMAIL_ACCOUNT, EMAIL_PASSWORD);
+loggers.info(EMAIL_ACCOUNT, EMAIL_PASSWORD);
 
 const transporter = createTransport({
     service: 'gmail',
@@ -26,9 +27,9 @@ const mailOptions = {
 
 try {
     const info = await transporter.sendMail(mailOptions);
-    console.log(info)
+    loggers.info(info)
 } catch (error) {
-    console.log(error);    
+    loggers.error(error);    
 }
 }
 
@@ -42,6 +43,6 @@ export async function ordenEmail(html, username, Email){
     try {
         const info = await transporter.sendMail(mailOptions)
      } catch (error) {
-        console.log(error)
+        loggers.error(error)
      }
   }

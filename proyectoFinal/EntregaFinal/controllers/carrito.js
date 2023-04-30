@@ -7,31 +7,31 @@ const ser = new carroSer();
 export default class carroCnt {
   async postCarro(req, res) {
     const idNew = await ser.postCarro();
-    res.status(201).json({ status: "ok", newCartId: idNew });
+    res.json({newCartId: idNew });
   }
 
   async getCarros(req, res) {
     const carts = await ser.getCarros();
-    res.status(200).json(carts);
+    res.json(carts);
   }
 
   async deleteCarro(req, res) {
     const id = req.params.id;
     const deletedId = await ser.deleteCarro(id);
-    res.status(200).json({ status: "ok", deletedCart: deletedId });
+    res.json({deletedCart: deletedId });
   }
 
   async deleteProductoCarro(req, res) {
     const cartId = req.params.id;
     const productId = req.params.id_producto;
     const updatedCart = await ser.deleteProductoCarro(cartId, productId);
-    res.status(201).json(updatedCart);
+    res.json(updatedCart);
   }
 
   async getProductosCarro(req, res) {
     const id = req.params.id;
     const products = await ser.getProductosCarro(id);
-    res.status(200).json(products);
+    res.json(products);
   }
 
   async postProductoCarro(req, res) {
@@ -42,7 +42,7 @@ export default class carroCnt {
     const updatedCart = await ser.postProductoCarro(cartId, productId);
     //console.log(cartId);
     //console.log(productId);
-    return updatedCart? res.status(201).json(updatedCart) : res.json({status: "No existe producto o carrito con ese ID"})
+    return updatedCart? res.json(updatedCart) : res.json({status: "Ups, algo salió mal"})
     
   }
 }

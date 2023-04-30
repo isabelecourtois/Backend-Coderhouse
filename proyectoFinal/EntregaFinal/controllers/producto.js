@@ -1,4 +1,5 @@
 import prodSer from "../services/productos.js";
+import { loggers } from "../loggers/loggers.js";
 
 const ser = new prodSer();
 
@@ -15,7 +16,7 @@ class prodCnt {
     const products = await ser.getAll();
     res.json(products);
   } catch (error) {
-    console.log(error);
+    loggers.error(error);
   }
 }
 

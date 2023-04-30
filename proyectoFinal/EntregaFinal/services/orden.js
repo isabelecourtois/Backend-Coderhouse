@@ -3,31 +3,32 @@ import usuarioRep from "../repositories/usuario.js";
 import carroRep from "../repositories/carrito.js";
 import { ordenEmail } from "../controllers/messages/sendEmail.js";
 import { ordenMess } from "../controllers/messages/ordenMess.js";
+import { loggers } from "../loggers/loggers.js";
+
 
 const ordenRepo = new ordenRep();
 const usuarioRepo = new usuarioRep();
 const carroRepo = new carroRep();
 
 export default class ordenSer {
-  async postOrden(userId) {
-    const user = await usuarioRepo.getById(userId);
+  async postOrden(id_usr) {
+    const user = await usuarioRepo.getById(id_usr);
     if (!user) return null;
     const cart = await carroRepo.getById(user.carritoId);
 
     const newOrder = {
       timestamp: Date.now(),
       usuario: user,
-      carrito: {...cart}, //SPRED TO COPY
+      carrito: {...cart}, 
     };
 
     const postOrden = await ordenRepo.save(newOrder);
     postOrden.carrito.productos = postOrden.carrito.productos.map(prod => prod)
 
-    //EMPTY CART AND UPDATE.
     cart.productos = [];
     await carroRepo.update(cart.id, cart);
 
-    // SEND EMAIL
+  //Empieza el envío de mensajes
     if (process.env.SEND_EMAIL_SUPPORT == "true") {
       try {
         const buyedProducts = cart.productos
@@ -35,33 +36,31 @@ export default class ordenSer {
             return `${producto.nombre} - ${producto.precio}`;
           })
           .join("<br>");
-        const html = `<h1>Nuevo Pedido</h1>
+        const html = `<h1>¡Haz reecibido un nuevo pedido!</h1>
                 ${buyedProducts}`;
         await ordenEmail(html, user.nombre, user.email);
       } catch (error) {
-        console.log(error);
+        loggers.error(error);
       }
     }
 
-    //TWILLIO SUPPORT
+
     if (process.env.TWILIO_SUPPORT == "true") {
       try {
-        //SEND WHATSAPP
         const whats = {
-          body: "Su pedido ha sido recibido y se encuentra en proceso",
+          body: "Pedido realizado",
           from: "whatsapp:" + process.env.TWILIO_WHATS,
-          to: "whatsapp", // IF TWILLIO ACCOUNT IS PAID WE SHOULD PUT HERE user.telefono
+          to: "whatsapp", 
         };
         await ordenMess(whats);
 
-        // SEND SMS
         const sms = {
-          body: "Su pedido ha sido recibido y se encuentra en proceso",
+          body: "Pedido realizado",
           from: process.env.TWILIO_SMS,
-          to: "SMS", // IF TWILLIO ACCOUNT IS PAID WE SHOULD PUT HERE user.telefono
+          to: "SMS", 
         };
       } catch (error) {
-        console.log(error);
+        loggers.error(error);
       }
     }
 
