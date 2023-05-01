@@ -7,31 +7,31 @@ const ser = new carroSer();
 export default class carroCnt {
   async postCarro(req, res) {
     const idNew = await ser.postCarro();
-    res.json({newCartId: idNew });
+    res.status(201).json({ status: "ok", newCartId: idNew });
   }
 
   async getCarros(req, res) {
     const carts = await ser.getCarros();
-    res.json(carts);
+    res.status(200).json(carts);
   }
 
   async deleteCarro(req, res) {
     const id = req.params.id;
     const deletedId = await ser.deleteCarro(id);
-    res.json({deletedCart: deletedId });
+    res.status(200).json({ status: "ok", deletedCart: deletedId });
   }
 
   async deleteProductoCarro(req, res) {
     const cartId = req.params.id;
     const productId = req.params.id_producto;
     const updatedCart = await ser.deleteProductoCarro(cartId, productId);
-    res.json(updatedCart);
+    res.status(201).json(updatedCart);
   }
 
   async getProductosCarro(req, res) {
     const id = req.params.id;
     const products = await ser.getProductosCarro(id);
-    res.json(products);
+    res.status(200).json(products);
   }
 
   async postProductoCarro(req, res) {
